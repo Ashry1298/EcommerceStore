@@ -100,6 +100,13 @@
                             </a>
                         </li>
                      
+                        <li class="nav-item">
+                            <a href="{{ route('tags.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Tags</p>
+                            </a>
+                        </li>
+                     
 
                     </ul>
                 </nav>
