@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title','Admin Panel')</title>
+    <title>@yield('title', 'Admin Panel')</title>
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -80,25 +81,26 @@
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
+                        <li class="nav-item">
+                            <a href="{{route('test')}}" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>Dashboard</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="./index.html" class="nav-link active">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v1</p>
-                                    </a>
-                                </li>
-                    
-                            </ul>
                         </li>
-           
+                        <li class="nav-item">
+                            <a href="{{ route('admins.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Admins</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('categories.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Categories</p>
+                            </a>
+                        </li>
+                     
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -112,10 +114,7 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Dashboard</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active">Dashboard </li>
@@ -129,7 +128,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                 @yield('content')
+                    @yield('content')
                 </div><!-- /.container-fluid -->
             </section>
             <!-- /.content -->
@@ -149,7 +148,7 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
- @include('admin.layouts.inc.js')
+    @include('admin.layouts.inc.js')
 </body>
 
 </html>
