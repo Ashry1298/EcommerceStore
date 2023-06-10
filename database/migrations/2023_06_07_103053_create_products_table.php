@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('name_en');
             $table->string('name_ar');
             $table->double('price');
-            $table->string('image');
-            $table->text('desc');
+            $table->string('main_image');
+            $table->text('desc_en');
+            $table->text('desc_ar');
             $table->bigInteger('quantity')->default(0);
             $table->timestamps();
         });

@@ -34,7 +34,7 @@
                             <label for="exampleInputName">Title_ar </label>
                             <input type="text" class="form-control @error('title_ar') is-invalid @enderror"
                                 id="exampleInputName" placeholder="Enter title_ar" name="title_ar" autocomplete="off"
-                                value="{{ $category->title_ar ? $category->title_ar : old('title_ar') }}">
+                                value="{{ $category->title_ar ? $category->title_ar : old('ar') }}">
                             @error('title_ar')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -53,6 +53,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <img src="{{asset('uploads/cats/'. $category->logo)}}" width="100" >
                     </div>
             </div>
             <div class="card-footer">

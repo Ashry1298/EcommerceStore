@@ -46,7 +46,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <th class="dtr-control sorting_1" tabindex="0"> Sorry No Data Available</td>
+                            <th class="dtr-control sorting_1" tabindex="0" colspan="6"> Sorry No Data Available</td>
                             </th>
                         </tr>
                     @endforelse
