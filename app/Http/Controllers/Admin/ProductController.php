@@ -70,6 +70,7 @@ class ProductController extends Controller
                 'selectedTags' => $product->tags()->get()->pluck('id')->toArray(),
                 'categories' =>  Category::get(),
                 'tags' => Tag::get(),
+                'productProps'=>ProductProps::where('product_id',$product->id)->get(),
             ]
         );
     }
@@ -79,6 +80,7 @@ class ProductController extends Controller
      */
     public function update(Update $request, Product $product)
     {
+
         $data = $request->validated();
         if ($request->hasFile('main_image')) {
             Storage::disk('uploads')->delete('products/' . $product->main_image);
@@ -92,13 +94,9 @@ class ProductController extends Controller
         }
         $product->update($data);
         if ($request->has(['key_en', 'key_ar', 'value_en', 'value_ar']) and $request->get('key_en') and $request->get('key_ar') and $request->get('value_en') and $request->get('value_ar')) { {
-                ProductProps::create([
-                    'key_en' => $data['key_en'],
-                    'key_ar' => $data['key_ar'],
-                    'value_en' => $data['value_en'],
-                    'value_ar' => $data['value_ar'],
-                    'product_id' =>$product->id,
-                ]);
+                $productPropsData = $request->only(['key_en', 'key_ar', 'value_en', 'value_ar']);
+                $productPropsData['product_id'] = $product->id;
+                ProductProps::create($productPropsData);
             }
         }
         return redirect()->route('products.index');
