@@ -58,4 +58,9 @@ class Product extends Model
             },
         );
     }
+
+    public function sizes()
+    {
+        return $this->belongsToMany(CategorySize::class,'product_size','product_id','category_size_id');
+    }
 }

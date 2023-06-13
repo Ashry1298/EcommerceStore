@@ -27,6 +27,7 @@ class Update extends FormRequest
             'name_ar' => 'required|string',
             'category_id' => 'required|numeric',
             'tags' => 'required|array',
+            'sizes' => 'required|array',
             'desc_en' => 'required|string',
             'desc_ar' => 'required|string',
             'price' => 'required|numeric',

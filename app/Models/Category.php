@@ -24,4 +24,9 @@ class Category extends Model
             },
         );
     }
+
+    public function sizes()
+    {
+        return $this->hasMany(CategorySize::class);
+    }
 }

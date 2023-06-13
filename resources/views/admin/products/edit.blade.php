@@ -3,6 +3,7 @@
     Edit Product
 @endsection
 @section('content')
+
     <div class="row">
         <div class="col-md-12">
             <div class="card card-primary">
@@ -38,7 +39,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-4">
                                 <label for="exampleFormControlSelect1">Category</label>
                                 <select class="form-control @error('category_id') is-invalid @enderror"
                                     id="exampleFormControlSelect1" name="category_id">
@@ -53,8 +54,25 @@
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="form-group col-4">
+                                <label for="exampleFormControlSelect1">Sizes</label>
+                                <select multiple class="form-control @error('category_id') is-invalid @enderror"
+                                    id="exampleFormControlSelect1" name="sizes[]">
+                                    @foreach ($categorySizes as $size)
+                                        <option value="{{ $size->id }}"
+                                            {{ $product->sizes->contains($size) ? 'selected' : '' }}>
+                                            {{ $size->sizeName }} </option>
+                                        {{-- option value="{{ $size->id }}"
+                                        {{ in_array($size->id, $selectedSizes) ? 'selected' : '' }}>{{ $size->sizeName }} --}}
+                                        {{-- </option> --}}
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                            <div class="form-group col-6">
+                            <div class="form-group col-4">
                                 <label for="exampleFormControlSelect1">Tags</label>
                                 <select class="form-control @error('tags') is-invalid @enderror" multiple
                                     id="exampleFormControlSelect1" name="tags[]">

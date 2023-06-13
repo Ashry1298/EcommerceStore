@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\Store;
 use App\Http\Requests\Product\Update;
+use App\Models\CategorySize;
 use App\Models\ProductProps;
 use Illuminate\Support\Facades\Storage;
 
@@ -46,7 +47,9 @@ class ProductController extends Controller
             $data['main_image'] = $logo;
         }
         $product = Product::create($data);
-        $product->tags()->sync($request->tags);
+        if (request()->has('tags')) {
+            $product->tags()->sync($request->tags);
+        }
         return redirect()->route('products.index');
     }
 
@@ -68,8 +71,10 @@ class ProductController extends Controller
             [
                 'product' => $product,
                 'selectedTags' => $product->tags()->get()->pluck('id')->toArray(),
+                'selectedSizes' => $product->sizes()->get()->pluck('id')->toArray(),
                 'categories' =>  Category::get(),
                 'tags' => Tag::get(),
+                'categorySizes' => CategorySize::where('category_id', $product->category_id)->get(),
                 'productProps' => ProductProps::where('product_id', $product->id)->get(),
             ]
         );
@@ -98,6 +103,12 @@ class ProductController extends Controller
                 $productPropsData['product_id'] = $product->id;
                 ProductProps::create($productPropsData);
             }
+        }
+        if (request()->has('tags')) {
+            $product->tags()->sync($request->tags);
+        }
+        if (request()->has('sizes')) {
+            $product->sizes()->sync($request->sizes);
         }
         return redirect()->route('products.index');
     }
