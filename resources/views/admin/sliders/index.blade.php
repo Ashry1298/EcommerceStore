@@ -39,7 +39,7 @@
                             <th>{{ $slider->small_title_en }}</th>
                             <th>{{ $slider->big_title_ar }}</th>
                             <th>{{ $slider->big_title_en }}</th>
-                            <th><img src="" width="100"></th>
+                            <th><img src="{{asset('uploads/sliders/'.$slider->image)}}" width="100"></th>
                             <th>
                                 <a class="btn btn-outline-info" href="{{route('sliders.edit',$slider->id)}}" role="button">edit </a>
                                 <form action="{{route('sliders.destroy',$slider->id)}}" method="POST">

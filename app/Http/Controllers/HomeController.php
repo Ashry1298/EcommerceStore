@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -12,6 +13,7 @@ class HomeController extends Controller
     {
         $products=Product::get();
         $cats=Category::get();
-        return view('Ui/Home/index',compact('products','cats'));
+        $sliders=Slider::get();
+        return view('Ui/Home/index',compact('products','cats','sliders'));
     }
 }

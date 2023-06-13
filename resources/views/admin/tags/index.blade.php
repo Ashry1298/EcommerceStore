@@ -22,8 +22,6 @@
                         <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1"
                             aria-label="Platform(s): activate to sort column ascending">Title_ar</th>
                         <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1"
-                            aria-label="Engine version: activate to sort column ascending">Logo </th>
-                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1"
                             aria-label="Engine version: activate to sort column ascending">Processing </th>
                     </tr>
                 </thead>
@@ -33,7 +31,6 @@
                             <th class="htr-control sorting_1" tabinhex="0">{{ $x + 1 }}</th>
                             <th>{{ $tag->title_en }}</th>
                             <th>{{ $tag->title_ar }}</th>
-                            <th>{{ $tag->logo }}</th>
                             <th>
                                 <a class="btn btn-outline-info" href="{{ route('tags.edit', $tag->id) }}"
                                     role="button">edit </a>
