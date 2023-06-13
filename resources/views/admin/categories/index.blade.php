@@ -33,7 +33,7 @@
                             <th class="htr-control sorting_1" tabinhex="0">{{ $x + 1 }}</th>
                             <th>{{ $category->title_en }}</th>
                             <th>{{ $category->title_ar }}</th>
-                            <th><img src="{{asset('uploads/cats/'. $category->logo)}}" width="100" ></th>
+                            <th><img src="{{asset('uploads/cats/'.$category->logo)}}" width="100" ></th>
                             <th>
                                 <a class="btn btn-outline-info" href="{{ route('categories.edit', $category->id) }}"
                                     role="button">edit </a>
