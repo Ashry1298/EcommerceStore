@@ -58,8 +58,8 @@ class SliderController extends Controller
    }
    public function destroy(Slider $slider)
    {
-      $slider->delete();
       Storage::disk('uploads')->delete('sliders/' . $slider->image);
+      $slider->delete();
       return redirect()->route('sliders.index');
    }
 }

@@ -70,7 +70,7 @@ class ProductController extends Controller
                 'selectedTags' => $product->tags()->get()->pluck('id')->toArray(),
                 'categories' =>  Category::get(),
                 'tags' => Tag::get(),
-                'productProps'=>ProductProps::where('product_id',$product->id)->get(),
+                'productProps' => ProductProps::where('product_id', $product->id)->get(),
             ]
         );
     }
@@ -105,8 +105,13 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        Storage::disk('uploads')->delete('products/' . $product->main_image);
+        if (!empty($product->images)) {
+            Storage::disk('uploads')->deleteDirectory('products/' . $product->id);
+        }
+        $product->delete();
+        return redirect()->route('products.index');
     }
 }
