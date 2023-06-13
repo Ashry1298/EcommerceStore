@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,5 +37,25 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $name = 'name_' . app()->getLocale();
+                return $this->$name;
+            },
+        );
+    }
+    protected function desc(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $desc = 'desc_' . app()->getLocale();
+                return $this->$desc;
+            },
+        );
     }
 }

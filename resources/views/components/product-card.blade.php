@@ -13,7 +13,7 @@
         <div class="block2-txt flex-w flex-t p-t-14">
             <div class="block2-txt-child1 flex-col-l ">
                 <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                    {{ $product->name_en }}-{{ $product->name_ar }}
+                    {{ $product->name }}
                 </a>
 
                 <span class="stext-105 cl3">
@@ -82,7 +82,7 @@
                     <div class="col-md-6 col-lg-5 p-b-30">
                         <div class="p-r-50 p-t-5 p-lr-0-lg">
                             <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-                                {{$product->name_en}}
+                                {{$product->name}}
                             </h4>
 
                             <span class="mtext-106 cl2">
@@ -90,7 +90,7 @@
                             </span>
 
                             <p class="stext-102 cl3 p-t-23">
-                                {{$product->desc_en	}}
+                                {{$product->desc}}
                             </p>
 
                             <!--  -->

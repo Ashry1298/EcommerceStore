@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::view('/test','index')->name('test');
-Route::get('/',[HomeController::class,'index'])->name('front');
+Route::middleware('Lang')->group(function(){
+    Route::view('/test', 'index')->name('test');
+    Route::get('/', [HomeController::class, 'index'])->name('front');
+});
+Route::get('changeLocale/{lang}', [LangController::class, 'changeLang'])->name('changeLang');

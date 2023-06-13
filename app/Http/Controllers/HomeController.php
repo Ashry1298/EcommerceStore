@@ -14,6 +14,7 @@ class HomeController extends Controller
         $products=Product::get();
         $cats=Category::get();
         $sliders=Slider::get();
+
         return view('Ui/Home/index',compact('products','cats','sliders'));
     }
 }

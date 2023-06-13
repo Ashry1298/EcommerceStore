@@ -8,14 +8,14 @@
                     <div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
                         <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
                             <span class="ltext-202 txt-center cl0 respon2">
-                                {{$slider->small_title_en}}
+                                {{$slider->smallTitle}}
                               
                             </span>
                         </div>
 
                         <div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
                             <h2 class="ltext-104 txt-center cl0 p-t-22 p-b-40 respon1">
-                                {{$slider->big_title_en}}
+                                {{$slider->bigTitle}}
                             </h2>
                         </div>
 
