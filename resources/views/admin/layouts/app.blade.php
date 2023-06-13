@@ -82,7 +82,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="{{route('test')}}" class="nav-link">
+                            <a href="{{ route('test') }}" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>Dashboard</p>
                             </a>
@@ -99,7 +99,7 @@
                                 <p>Categories</p>
                             </a>
                         </li>
-                     
+
                         <li class="nav-item">
                             <a href="{{ route('tags.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -112,7 +112,13 @@
                                 <p>Products</p>
                             </a>
                         </li>
-                     
+                        <li class="nav-item">
+                            <a href="{{ route('sliders.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Sliders</p>
+                            </a>
+                        </li>
+
 
                     </ul>
                 </nav>
