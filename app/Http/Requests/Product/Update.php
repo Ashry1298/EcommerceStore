@@ -31,12 +31,13 @@ class Update extends FormRequest
             'desc_en' => 'required|string',
             'desc_ar' => 'required|string',
             'price' => 'required|numeric',
-            'quantity' => 'required|numeric',
             'main_image' => 'nullable|image',
             'key_en'=>'nullable|string|max:255',
             'key_ar'=>'nullable|string|max:255',
             'value_en'=>'nullable|string|max:255',
             'value_ar'=>'nullable|string|max:255',
+            'color_ar' => 'required|string',
+            'color_en' => 'required|string',
         ];
     }
 }

@@ -100,7 +100,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-2">
                                 <label for="exampleInputName">Price </label>
                                 <input type="text" class="form-control @error('price') is-invalid @enderror"
                                     placeholder="Enter price" name="price" autocomplete="off"
@@ -109,7 +109,7 @@
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-
+                            {{-- 
                             <div class="form-group col-6">
                                 <label for="exampleInputName">Quantity </label>
                                 <input type="text" class="form-control @error('quantity') is-invalid @enderror"
@@ -118,7 +118,7 @@
                                 @error('quantity')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="form-group">
                             <div class="col-lg-12">
@@ -172,6 +172,30 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h3>Add Color</h3>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="exampleInputName">لون جديد عربى </label>
+                            <input type="text" class="form-control @error('color_ar') is-invalid @enderror"
+                                placeholder="Enter Property Name" name="color_ar" autocomplete="off"
+                                value="{{ $product->color_ar ? $product->color_ar : old('color_ar') }}">
+                            @error('color_ar')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="exampleInputName">New Color </label>
+                            <input type="text" class="form-control @error('color_en') is-invalid @enderror"
+                                placeholder="Enter Property Value " name="color_en" autocomplete="off"
+                                value="{{ $product->color_en ? $product->color_en : old('color_en') }}">
+                            @error('color_en')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                     </div>
             </div>
             <div class="card-footer">
@@ -238,6 +262,45 @@
             @else
                 No Properties for this product- لا يوجد خصائص لهذا المنتج
             @endif
+    
+                @forelse ($product->colors as $item)
+                    <form action="{{ route('productColors.update', $item->id) }}" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="form-group col-2">
+                                <label for="exampleInputName"> اللون  </label>
+                                <input type="text" class="form-control @error('color_ar') is-invalid @enderror"
+                                    placeholder="Enter Property Name" name="color_ar" autocomplete="off"
+                                    value="{{ $item->color_ar }}">
+                                @error('color_ar')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-2">
+                                <label for="exampleInputName">Color </label>
+                                <input type="text" class="form-control @error('color_en') is-invalid @enderror"
+                                    placeholder="Enter Property Value " name="color_en" autocomplete="off"
+                                    value="{{ $item->color_en }}">
+                                @error('color_en')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                     
+                            <div class="form-group col-2">
+                                <button type="submit" class="btn btn-outline-info">Update</button>
+                            </div>
+
+                    </form>
+                    <div class="col-2">
+                        <form action="{{ route('productProps.delete', $item->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                        </form>
+                    </div>
+                @empty
+
+                @endforelse
             <div class="row">
                 <div class="col-12">
                     <h3>Other Product Images-صور اخرى للمنتج </h3>

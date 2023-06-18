@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\Store;
 use App\Http\Requests\Product\Update;
 use App\Models\CategorySize;
+use App\Models\ProductColor;
 use App\Models\ProductProps;
 use Illuminate\Support\Facades\Storage;
 
@@ -50,7 +51,7 @@ class ProductController extends Controller
         if (request()->has('tags')) {
             $product->tags()->sync($request->tags);
         }
-        return redirect()->route('products.index');
+        return redirect()->route('products.edit', $product->id);
     }
 
     /**
@@ -109,6 +110,12 @@ class ProductController extends Controller
         }
         if (request()->has('sizes')) {
             $product->sizes()->sync($request->sizes);
+        }
+        if (request()->has('color_ar', 'color_en')) {
+            $data = $request->only(['color_ar', 'color_en']);
+            ProductColor::create([
+                'product_id' => $product->id,
+            ] + $data);
         }
         return redirect()->route('products.index');
     }

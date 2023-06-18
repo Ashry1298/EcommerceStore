@@ -17,7 +17,6 @@ class Product extends Model
         'main_image',
         'desc_en',
         'desc_ar',
-        'quantity'
     ];
 
     public function category()
@@ -37,6 +36,10 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductImage::class);
+    }
+    public function colors()
+    {
+        return $this->hasMany(ProductColor::class);
     }
 
 
@@ -61,6 +64,6 @@ class Product extends Model
 
     public function sizes()
     {
-        return $this->belongsToMany(CategorySize::class,'product_size','product_id','category_size_id');
+        return $this->belongsToMany(CategorySize::class, 'product_size', 'product_id', 'category_size_id');
     }
 }

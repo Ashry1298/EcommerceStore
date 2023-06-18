@@ -90,7 +90,7 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group col-6">
+                            {{-- <div class="form-group col-6">
                                 <label for="exampleInputName">Quantity </label>
                                 <input type="text" class="form-control @error('quantity') is-invalid @enderror"
                                     id="exampleInputName" placeholder="Enter quantity" name="quantity" autocomplete="off"
@@ -98,7 +98,7 @@
                                 @error('quantity')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="form-group">

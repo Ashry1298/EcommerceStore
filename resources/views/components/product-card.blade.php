@@ -34,7 +34,7 @@
  <!-- Modal -->
  <div class="modal fade" id="showProductModal{{ $product->id }}" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-     <div class="modal-dialog modal-dialog-centered" style="min-width: 800px" role="document">
+     <div class="modal-dialog modal-dialog-centered" style="min-width: 800px ;margin-top:10rem" role="document">
          <div class="modal-content">
              <div class="container">
                  <div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
@@ -111,7 +111,8 @@
                                                      <select class="js-select2" name="time">
                                                          <option>Choose Size</option>
                                                          @foreach ($product->sizes as $item)
-                                                             <option value="{{ $item->id }}">{{ $item->sizeName }}</option>
+                                                             <option value="{{ $item->id }}">{{ $item->sizeName }}
+                                                             </option>
                                                          @endforeach
 
                                                      </select>
@@ -121,24 +122,27 @@
                                          </div>
                                      @endif
 
-                                     <div class="flex-w flex-r-m p-b-10">
-                                         <div class="size-203 flex-c-m respon6">
-                                             Color
-                                         </div>
+                                     @if ($product->colors->count() != 0)
+                                         <div class="flex-w flex-r-m p-b-10">
 
-                                         <div class="size-204 respon6-next">
-                                             <div class="rs1-select2 bor8 bg0">
-                                                 <select class="js-select2" name="time">
-                                                     <option>Choose an option</option>
-                                                     <option>Red</option>
-                                                     <option>Blue</option>
-                                                     <option>White</option>
-                                                     <option>Grey</option>
-                                                 </select>
-                                                 <div class="dropDownSelect2"></div>
+                                             <div class="size-203 flex-c-m respon6">
+                                                 Color
+                                             </div>
+
+                                             <div class="size-204 respon6-next">
+                                                 <div class="rs1-select2 bor8 bg0">
+                                                     <select class="js-select2" name="time">
+                                                         <option>Choose Color</option>
+                                                         @foreach ($product->colors as $item)
+                                                             <option value="{{ $item->id }}">{{$item->color}}
+                                                             </option>
+                                                         @endforeach
+                                                     </select>
+                                                     <div class="dropDownSelect2"></div>
+                                                 </div>
                                              </div>
                                          </div>
-                                     </div>
+                                     @endif
 
                                      <div class="flex-w flex-r-m p-b-10">
                                          <div class="size-204 flex-w flex-m respon6-next">
