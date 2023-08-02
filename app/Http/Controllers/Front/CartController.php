@@ -31,6 +31,21 @@ class CartController extends Controller
         ]);
         return back();
     }
+    public function update($id, Request $request)
+    {
+        $ids =  array_keys($request->quantity);
+        foreach ($ids as $id) {
+            $quantity = request()->quantity[$id];
+            $cartItem = CartItems::findorfail($id);
+            $product = Product::findorfail($cartItem->product_id);
+            $totPrice = ($product->price) * ($quantity);
+            CartItems::findorfail($id)->update([
+                'quantity' => $quantity,
+                'totPrice' => $totPrice,
+            ]);
+        }
+        return back();
+    }
     public function destroy($id)
     {
         CartItems::findorfail($id)->delete();

@@ -25,5 +25,6 @@ Route::middleware('Lang')->group(function () {
     Route::get('/cartview',[CartController::class,'index']);
     Route::get('/cartItem/delete/{id}',[CartController::class,'destroy'])->name('cartItem.delete');
     Route::get('viewCartItems/{id}',[CartController::class,'cartItemsView'])->name('viewCartItems');
+    Route::post('/cartItems/Update/{id}',[CartController::class,'update'])->name('cartItems.update');
 });
 Route::get('changeLocale/{lang}', [LangController::class, 'changeLang'])->name('changeLang');

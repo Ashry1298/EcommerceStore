@@ -4,7 +4,8 @@
     viewCartItems
 @endsection
 @section('content')
-    <form class="bg0 p-t-75 p-b-85">
+    <form class="bg0 p-t-75 p-b-85" action="{{ route('cartItems.update', 1) }}" method="POST">
+        @csrf
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -23,7 +24,8 @@
                                     @foreach ($cartItems as $cartItem)
                                         <tr class="table_row">
                                             <td class="column-1">
-                                               <a href="{{route('cartItem.delete',$cartItem->id)}}" class="btn btn-outline-danger btn-sm">Delete</a>
+                                                <a href="{{ route('cartItem.delete', $cartItem->id) }}"
+                                                    class="btn btn-outline-danger btn-sm">Delete</a>
                                             </td>
                                             <td class="column-1">
                                                 <div class="how-itemcart1">
@@ -39,7 +41,8 @@
                                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                                     </div>
                                                     <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                        name="num-product1" value="{{ $cartItem->quantity }}">
+                                                        name="quantity[{{ $cartItem->id }}]"
+                                                        value="{{ $cartItem->quantity }}">
                                                     <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                                         <i class="fs-16 zmdi zmdi-plus"></i>
                                                     </div>
@@ -64,9 +67,10 @@
                                 </div>
                             </div>
 
-                            <div
-                                class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                                Update Cart
+                            <div>
+                                <button type="submit"
+                                    class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
+                                    Update Cart</button>
                             </div>
                         </div>
                     </div>
