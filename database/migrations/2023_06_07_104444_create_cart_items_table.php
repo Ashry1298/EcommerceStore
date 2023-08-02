@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('mac');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->string('totPrice');
             $table->bigInteger('quantity');
 
             $table->timestamps();

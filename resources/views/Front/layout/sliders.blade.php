@@ -1,9 +1,9 @@
 <section class="section-slide">
     <div class="wrap-slick1 rs2-slick1">
         <div class="slick1">
-            @foreach ($sliders as $slider)
+            @foreach (App\Models\Slider::get() as $slider)
             <div class="item-slick1 bg-overlay1" style="background-image: url({{asset('uploads/sliders/'.$slider->image)}});"
-                data-thumb="{{asset('uploads/sliders/'.$slider->image)}}" data-caption="Women’s Wear">
+                data-thumb="{{asset('uploads/sliders/'.$slider->image)}}" data-caption="{{$slider->smallTitle}}">
                 <div class="container h-full">
                     <div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
                         <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
@@ -30,7 +30,6 @@
             </div>
             @endforeach
         </div>
-
         <div class="wrap-slick1-dots p-lr-10"></div>
     </div>
 </section>
