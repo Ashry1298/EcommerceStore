@@ -98,55 +98,56 @@
                                  <p class="stext-102 cl3 p-t-23">
                                      {{ $product->desc }}
                                  </p>
+                                 <form action="{{ route('Frontcart.store', ['product_id' => $product->id]) }}"
+                                     method="POST">
+                                     @csrf
+                                     <!--  -->
+                                     <div class="p-t-33">
+                                         @if ($product->sizes->count() != 0)
+                                             <div class="flex-w flex-r-m p-b-10">
+                                                 <div class="size-203 flex-c-m respon6">
+                                                     Size
+                                                 </div>
+                                                 <div class="size-204 respon6-next">
+                                                     <div class="rs1-select2 bor8 bg0">
+                                                         <select class="js-select2" name="category_size_id">
+                                                             <option value="">Choose Size</option>
+                                                             @foreach ($product->sizes as $item)
+                                                                 <option value="{{ $item->id }}">
+                                                                     {{ $item->sizeName }}
+                                                                 </option>
+                                                             @endforeach
 
-                                 <!--  -->
-                                 <div class="p-t-33">
-                                     @if ($product->sizes->count() != 0)
-                                         <div class="flex-w flex-r-m p-b-10">
-                                             <div class="size-203 flex-c-m respon6">
-                                                 Size
-                                             </div>
-
-                                             <div class="size-204 respon6-next">
-                                                 <div class="rs1-select2 bor8 bg0">
-                                                     <select class="js-select2" name="time">
-                                                         <option>Choose Size</option>
-                                                         @foreach ($product->sizes as $item)
-                                                             <option value="{{ $item->id }}">{{ $item->sizeName }}
-                                                             </option>
-                                                         @endforeach
-
-                                                     </select>
-                                                     <div class="dropDownSelect2"></div>
+                                                         </select>
+                                                         <div class="dropDownSelect2"></div>
+                                                     </div>
                                                  </div>
                                              </div>
-                                         </div>
-                                     @endif
+                                         @endif
 
-                                     @if ($product->colors->count() != 0)
-                                         <div class="flex-w flex-r-m p-b-10">
+                                         @if ($product->colors->count() != 0)
+                                             <div class="flex-w flex-r-m p-b-10">
 
-                                             <div class="size-203 flex-c-m respon6">
-                                                 Color
-                                             </div>
+                                                 <div class="size-203 flex-c-m respon6">
+                                                     Color
+                                                 </div>
 
-                                             <div class="size-204 respon6-next">
-                                                 <div class="rs1-select2 bor8 bg0">
-                                                     <select class="js-select2" name="time">
-                                                         <option>Choose Color</option>
-                                                         @foreach ($product->colors as $item)
-                                                             <option value="{{ $item->id }}">{{ $item->color }}
-                                                             </option>
-                                                         @endforeach
-                                                     </select>
-                                                     <div class="dropDownSelect2"></div>
+                                                 <div class="size-204 respon6-next">
+                                                     <div class="rs1-select2 bor8 bg0">
+                                                         <select class="js-select2" name="product_color_id">
+                                                             <option value="">Choose Color</option>
+                                                             @foreach ($product->colors as $item)
+                                                                 <option value="{{ $item->id }}">
+                                                                     {{ $item->color }}
+                                                                 </option>
+                                                             @endforeach
+                                                         </select>
+                                                         <div class="dropDownSelect2"></div>
+                                                     </div>
                                                  </div>
                                              </div>
-                                         </div>
-                                     @endif
-                                     <form action="{{ route('Frontcart.store', ['product_id' => $product->id]) }}"
-                                         method="POST">
-                                         @csrf
+                                         @endif
+
                                          <div class="flex-w flex-r-m p-b-10">
                                              <div class="size-204 flex-w flex-m respon6-next">
                                                  <div class="wrap-num-product flex-w m-r-20 m-tb-10">
@@ -163,43 +164,39 @@
                                                  <button
                                                      type="submit"class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
                                                      Add to cart </button>
-
-
-
                                              </div>
                                          </div>
-                                     </form>
+                                 </form>
 
-                                 </div>
+                             </div>
 
-                                 <!--  -->
-                                 <div class="flex-w flex-m p-l-100 p-t-40 respon7">
-                                     <div class="flex-m bor9 p-r-10 m-r-11">
-                                         <a href="#"
-                                             class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
-                                             data-tooltip="Add to Wishlist">
-                                             <i class="zmdi zmdi-favorite"></i>
-                                         </a>
-                                     </div>
-
+                             <!--  -->
+                             <div class="flex-w flex-m p-l-100 p-t-40 respon7">
+                                 <div class="flex-m bor9 p-r-10 m-r-11">
                                      <a href="#"
-                                         class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                                         data-tooltip="Facebook">
-                                         <i class="fa fa-facebook"></i>
-                                     </a>
-
-                                     <a href="#"
-                                         class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                                         data-tooltip="Twitter">
-                                         <i class="fa fa-twitter"></i>
-                                     </a>
-
-                                     <a href="#"
-                                         class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                                         data-tooltip="Google Plus">
-                                         <i class="fa fa-google-plus"></i>
+                                         class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
+                                         data-tooltip="Add to Wishlist">
+                                         <i class="zmdi zmdi-favorite"></i>
                                      </a>
                                  </div>
+
+                                 <a href="#"
+                                     class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                                     data-tooltip="Facebook">
+                                     <i class="fa fa-facebook"></i>
+                                 </a>
+
+                                 <a href="#"
+                                     class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                                     data-tooltip="Twitter">
+                                     <i class="fa fa-twitter"></i>
+                                 </a>
+
+                                 <a href="#"
+                                     class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                                     data-tooltip="Google Plus">
+                                     <i class="fa fa-google-plus"></i>
+                                 </a>
                              </div>
                          </div>
                      </div>
@@ -207,6 +204,7 @@
              </div>
          </div>
      </div>
+ </div>
  </div>
  <div class="wrap-modal1 js-modal1 p-t-60 p-b-20">
      <div class="overlay-modal1 "></div>

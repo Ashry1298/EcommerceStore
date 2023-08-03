@@ -35,6 +35,7 @@
                 <a
                     href="{{ route('changeLang', ['lang' => app()->getlocale()]) }}">{{ app()->getlocale() == 'ar' ? 'English' : 'العربيه' }}</a>
             </li>
+          
 
         </ul>
     </div>

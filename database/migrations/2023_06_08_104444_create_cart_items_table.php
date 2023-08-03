@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('mac');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->string('totPrice');
             $table->bigInteger('quantity');
-
+            $table->foreignId('category_size_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('product_color_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->decimal('totPrice');
             $table->timestamps();
         });
     }

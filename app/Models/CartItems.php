@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class CartItems extends Model
 {
     use HasFactory;
-    protected $fillable = ['mac', 'product_id', 'quantity', 'totPrice'];
+    protected $fillable = ['mac', 'product_id', 'quantity', 'totPrice', 'category_size_id', 'product_color_id'];
 
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
-
-
+    public function sizes()
+    {
+        return $this->belongsTo(CategorySize::class);
+    }
 }

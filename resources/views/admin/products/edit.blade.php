@@ -14,6 +14,15 @@
                 <div class="card-header">
                     <h3 class="card-title">Edit Product </h3>
                 </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
@@ -262,45 +271,44 @@
             @else
                 No Properties for this product- لا يوجد خصائص لهذا المنتج
             @endif
-    
-                @forelse ($product->colors as $item)
-                    <form action="{{ route('productColors.update', $item->id) }}" method="POST">
+
+            @forelse ($product->colors as $item)
+                <form action="{{ route('productColors.update', $item->id) }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="form-group col-2">
+                            <label for="exampleInputName"> اللون </label>
+                            <input type="text" class="form-control @error('color_ar') is-invalid @enderror"
+                                placeholder="Enter Property Name" name="color_ar" autocomplete="off"
+                                value="{{ $item->color_ar }}">
+                            @error('color_ar')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="exampleInputName">Color </label>
+                            <input type="text" class="form-control @error('color_en') is-invalid @enderror"
+                                placeholder="Enter Property Value " name="color_en" autocomplete="off"
+                                value="{{ $item->color_en }}">
+                            @error('color_en')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group col-2">
+                            <button type="submit" class="btn btn-outline-info">Update</button>
+                        </div>
+
+                </form>
+                <div class="col-2">
+                    <form action="{{ route('productProps.delete', $item->id) }}" method="POST">
                         @csrf
-                        <div class="row">
-                            <div class="form-group col-2">
-                                <label for="exampleInputName"> اللون  </label>
-                                <input type="text" class="form-control @error('color_ar') is-invalid @enderror"
-                                    placeholder="Enter Property Name" name="color_ar" autocomplete="off"
-                                    value="{{ $item->color_ar }}">
-                                @error('color_ar')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group col-2">
-                                <label for="exampleInputName">Color </label>
-                                <input type="text" class="form-control @error('color_en') is-invalid @enderror"
-                                    placeholder="Enter Property Value " name="color_en" autocomplete="off"
-                                    value="{{ $item->color_en }}">
-                                @error('color_en')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                     
-                            <div class="form-group col-2">
-                                <button type="submit" class="btn btn-outline-info">Update</button>
-                            </div>
-
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger">Delete</button>
                     </form>
-                    <div class="col-2">
-                        <form action="{{ route('productProps.delete', $item->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger">Delete</button>
-                        </form>
-                    </div>
-                @empty
-
-                @endforelse
+                </div>
+            @empty
+            @endforelse
             <div class="row">
                 <div class="col-12">
                     <h3>Other Product Images-صور اخرى للمنتج </h3>

@@ -9,4 +9,5 @@ class CategorySize extends Model
 {
     use HasFactory;
     protected $fillable=['category_id','sizeName'];
+
 }

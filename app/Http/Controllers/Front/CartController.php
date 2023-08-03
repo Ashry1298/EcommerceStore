@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-
     public function index()
     {
-        return view('Front.layout.viewCart');
+
+        return view('Front.layout.cart');
     }
     public function cartItemsView($id)
     {
@@ -21,14 +21,12 @@ class CartController extends Controller
     }
     public function store(int $product_id, Request $request)
     {
+        $data = $request->except('_token');
+        $data['mac'] = 1;
+        $data['product_id'] = $product_id;
         $product = Product::findorfail($product_id);
-        $totPrice = ($product->price) * ($request->quantity);
-        CartItems::create([
-            'mac' => 1,
-            'product_id' => $product_id,
-            'quantity' => $request->quantity,
-            'totPrice' => $totPrice
-        ]);
+        $data['totPrice'] = ($product->price) * ($request->quantity);
+        CartItems::create($data);
         return back();
     }
     public function update($id, Request $request)

@@ -19,9 +19,15 @@
                                         <th class="column-2"></th>
                                         <th class="column-3">Price</th>
                                         <th class="column-4">Quantity</th>
+                                        <th class="column-4">Size</th>
+                                        <th class="column-4">Color</th>
                                         <th class="column-5">Total</th>
                                     </tr>
                                     @foreach ($cartItems as $cartItem)
+                                        @php
+                                            $CategorySizeName = App\Models\CategorySize::where('id', $cartItem->category_size_id)->first();
+                                            $ProductColorName = App\Models\ProductColor::where('id', $cartItem->product_color_id)->first();
+                                        @endphp
                                         <tr class="table_row">
                                             <td class="column-1">
                                                 <a href="{{ route('cartItem.delete', $cartItem->id) }}"
@@ -48,6 +54,11 @@
                                                     </div>
                                                 </div>
                                             </td>
+                                            @if ($cartItem->category_size_id != null && $cartItem->product_color_id != null)
+                                                <td class="column-5">{{ $CategorySizeName->sizeName }}</td>
+                                                <td class="column-5">{{ $ProductColorName->color }}</td>
+                                            @endif
+
                                             <td class="column-5">{{ $cartItem->totPrice }}</td>
                                         </tr>
                                     @endforeach
