@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('full_name');
+            $table->string('full_address');
+            $table->string('phone');
+            $table->string('email');
+            $table->float('sub_total');
+            $table->enum('status', [
+                'pending',
+                'shipping',
+                'rejected',
+                'delivered',
+                'closed',
+            ])->default('pending');
+            $table->text('status_notes')->nullable();
+            $table->float('total');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });

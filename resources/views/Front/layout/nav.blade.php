@@ -9,6 +9,19 @@
             <li>
                 <a href="{{ route('front') }}">Home</a>
             </li>
+            @auth
+                <li>
+                    <a href="{{ route('auth.logout') }}">Logout</a>
+                </li>
+            @endauth
+            @guest
+                <li>
+                    <a href="{{ route('auth.register') }}">Register</a>
+                </li>
+                <li>
+                    <a href="{{ route('auth.login') }}">Login</a>
+                </li>
+            @endguest
             @if (!empty($cats))
                 <li>
                     <a>{{ app()->getlocale() == 'en' ? 'Categories' : 'الأقسام' }}</a>
@@ -35,7 +48,7 @@
                 <a
                     href="{{ route('changeLang', ['lang' => app()->getlocale()]) }}">{{ app()->getlocale() == 'ar' ? 'English' : 'العربيه' }}</a>
             </li>
-          
+
 
         </ul>
     </div>
@@ -44,9 +57,10 @@
     <div class="wrap-icon-header flex-w flex-r-m h-full">
         <div class="flex-c-m h-full p-r-25 bor6">
             @php
-                $cartItemsCount=App\Models\CartItems::count();
+                $cartItemsCount = App\Models\CartItems::count();
             @endphp
-            <div class="icon-header-item cl0 hov-cl1 trans-04 p-lr-11 icon-header-noti js-show-cart" data-notify="{{$cartItemsCount}}">
+            <div class="icon-header-item cl0 hov-cl1 trans-04 p-lr-11 icon-header-noti js-show-cart"
+                data-notify="{{ $cartItemsCount }}">
                 <i class="zmdi zmdi-shopping-cart"></i>
             </div>
         </div>

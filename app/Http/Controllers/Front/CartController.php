@@ -2,51 +2,53 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
-use App\Models\CartItems;
 use App\Models\Product;
+use App\Models\CartItems;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CartItems\Store;
+use App\Http\Requests\CartItems\Update;
 
 class CartController extends Controller
 {
-    public function index()
-    {
-
-        return view('Front.layout.cart');
-    }
+  
     public function cartItemsView($id)
     {
         $cartItems =  CartItems::where('mac', 1)->get();
         return view('Front.layout.viewCart', compact('cartItems'));
     }
-    public function store(int $product_id, Request $request)
+    public function store(Product $product, Store $request)
     {
-        $data = $request->except('_token');
+        $data = $request->validated();
         $data['mac'] = 1;
-        $data['product_id'] = $product_id;
-        $product = Product::findorfail($product_id);
-        $data['totPrice'] = ($product->price) * ($request->quantity);
+        $data['product_id'] = $product->id;
+        $data['product_price'] = $product->price;
+        $data['totPrice'] = $this->getTotalPrice($request->quantity, $product->price);
         CartItems::create($data);
         return back();
     }
-    public function update($id, Request $request)
+    public function update($id, Update $request)
     {
         $ids =  array_keys($request->quantity);
         foreach ($ids as $id) {
-            $quantity = request()->quantity[$id];
             $cartItem = CartItems::findorfail($id);
             $product = Product::findorfail($cartItem->product_id);
-            $totPrice = ($product->price) * ($quantity);
             CartItems::findorfail($id)->update([
-                'quantity' => $quantity,
-                'totPrice' => $totPrice,
+                'quantity' => request()->quantity[$id],
+                'totPrice' => $this->getTotalPrice(request()->quantity[$id], $product->price),
             ]);
         }
         return back();
     }
-    public function destroy($id)
+    public function destroy(CartItems $cartItem)
     {
-        CartItems::findorfail($id)->delete();
-        return back();
+        $cartItem->delete();
+        return redirect()->back();
+    }
+
+    public function getTotalPrice(int $quantity, float $price)
+    {
+        $total = $quantity * $price;
+        return $total;
     }
 }

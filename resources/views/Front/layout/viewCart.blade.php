@@ -1,14 +1,13 @@
 @extends('Front/layout/master')
-
 @section('title')
     viewCartItems
 @endsection
 @section('content')
-    <form class="bg0 p-t-75 p-b-85" action="{{ route('cartItems.update', 1) }}" method="POST">
-        @csrf
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+                <form class="bg0 p-t-75 p-b-85" action="{{ route('cartItems.update', 1) }}" method="POST">
+                    @csrf
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
                         <div class="wrap-table-shopping-cart">
                             <table class="table-shopping-cart">
@@ -16,12 +15,12 @@
                                     <tr class="table_head">
                                         <th class="column-1">Processing</th>
                                         <th class="column-1">Product</th>
-                                        <th class="column-2"></th>
                                         <th class="column-3">Price</th>
                                         <th class="column-4">Quantity</th>
                                         <th class="column-4">Size</th>
                                         <th class="column-4">Color</th>
                                         <th class="column-5">Total</th>
+                                        <th class="column-5">Image</th>
                                     </tr>
                                     @foreach ($cartItems as $cartItem)
                                         @php
@@ -30,14 +29,8 @@
                                         @endphp
                                         <tr class="table_row">
                                             <td class="column-1">
-                                                <a href="{{ route('cartItem.delete', $cartItem->id) }}"
+                                                <a href="{{ route('cartItem.destroy', $cartItem->id) }}"
                                                     class="btn btn-outline-danger btn-sm">Delete</a>
-                                            </td>
-                                            <td class="column-1">
-                                                <div class="how-itemcart1">
-                                                    <img src="{{ asset('uploads/products/' . $cartItem->product->main_image) }}"
-                                                        alt="IMG">
-                                                </div>
                                             </td>
                                             <td class="column-2">{{ $cartItem->product->name }}</td>
                                             <td class="column-3">{{ $cartItem->product->price }}</td>
@@ -58,8 +51,15 @@
                                                 <td class="column-5">{{ $CategorySizeName->sizeName }}</td>
                                                 <td class="column-5">{{ $ProductColorName->color }}</td>
                                             @endif
-
+                                            
                                             <td class="column-5">{{ $cartItem->totPrice }}</td>
+                                            <td class="column-1">
+                                                <div class="how-itemcart1">
+                                                    <img src="{{ asset('uploads/products/' . $cartItem->product->main_image) }}"
+                                                        alt="IMG">
+                                                </div>
+                                            </td>
+
                                         </tr>
                                     @endforeach
 
@@ -68,16 +68,6 @@
                         </div>
 
                         <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-                            <div class="flex-w flex-m m-r-20 m-tb-5">
-                                <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text"
-                                    name="coupon" placeholder="Coupon Code">
-
-                                <div
-                                    class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
-                                    Apply coupon
-                                </div>
-                            </div>
-
                             <div>
                                 <button type="submit"
                                     class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
@@ -85,14 +75,18 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+                </form>
+            </div>
+            <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+                <form action="{{ route('checkout.store') }}" id="checkout" method="POST">
+                    @csrf
                     <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
                         <h4 class="mtext-109 cl2 p-b-30">
                             Cart Totals
                         </h4>
-
+                        @php
+                            $SubTotal = App\Models\CartItems::where('mac', 1)->sum('totPrice');
+                        @endphp
                         <div class="flex-w flex-t bor12 p-b-13">
                             <div class="size-208">
                                 <span class="stext-110 cl2">
@@ -102,7 +96,7 @@
 
                             <div class="size-209">
                                 <span class="mtext-110 cl2">
-                                    {{ App\Models\CartItems::where('mac', 1)->sum('totPrice') }}
+                                    <input type="text" value="{{ $SubTotal }}" name="sub_total" readonly>
                                 </span>
                             </div>
                         </div>
@@ -116,49 +110,52 @@
 
                             <div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
                                 <p class="stext-111 cl6 p-t-2">
-                                    There are no shipping methods available. Please double check your address, or contact us
+                                    There are no shipping methods available. Please double check your address, or
+                                    contact us
                                     if you need any help.
                                 </p>
 
                                 <div class="p-t-15">
-                                    <span class="stext-112 cl8">
-                                        Calculate Shipping
-                                    </span>
-
-                                    <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                                        <select class="js-select2 select2-hidden-accessible" name="time" tabindex="-1"
-                                            aria-hidden="true">
-                                            <option>Select a country...</option>
-                                            <option>USA</option>
-                                            <option>UK</option>
-                                        </select><span class="select2 select2-container select2-container--default"
-                                            dir="ltr" style="width: 142.4px;"><span class="selection"><span
-                                                    class="select2-selection select2-selection--single" role="combobox"
-                                                    aria-haspopup="true" aria-expanded="false" tabindex="0"
-                                                    aria-labelledby="select2-time-v9-container"><span
-                                                        class="select2-selection__rendered" id="select2-time-v9-container"
-                                                        title="Select a country...">Select a country...</span><span
-                                                        class="select2-selection__arrow" role="presentation"><b
-                                                            role="presentation"></b></span></span></span><span
-                                                class="dropdown-wrapper" aria-hidden="true"></span></span>
-                                        <div class="dropDownSelect2"></div>
+                                    <div class="bor8 bg0 m-b-12">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="full_name"
+                                            placeholder="Full Name">
                                     </div>
-
+                                    <div class="bor8 bg0 m-b-12">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone"
+                                            placeholder="phone" class="@error('phone') is-invalid @enderror">
+                                        @error('phone')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="bor8 bg0 m-b-12">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="email"
+                                            placeholder="email" class="@error('email') is-invalid @enderror">
+                                        @error('email')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="bor8 bg0 m-b-12">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="country"
+                                            placeholder="country"class="@error('country') is-invalid @enderror">
+                                        @error('country')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                     <div class="bor8 bg0 m-b-12">
                                         <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state"
-                                            placeholder="State /  country">
+                                            placeholder="State"class="@error('state') is-invalid @enderror">
+                                        @error('state')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div class="bor8 bg0 m-b-22">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode"
-                                            placeholder="Postcode / Zip">
-                                    </div>
-
-                                    <div class="flex-w">
-                                        <div
-                                            class="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
-                                            Update Totals
-                                        </div>
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text"
+                                            name="cityAndP-c"
+                                            placeholder="City and Postal-code "class="@error('cityAndP-c') is-invalid @enderror">
+                                        @error('cityAndP-c')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                 </div>
@@ -167,11 +164,8 @@
 
                         <div class="flex-w flex-t p-t-27 p-b-33">
                             <div class="size-208">
-                                <span class="mtext-101 cl2">
-                                    Total:
-                                </span>
+                                <input type="hidden" name="total" value="{{ $SubTotal }}">
                             </div>
-
                             <div class="size-209 p-t-1">
                                 <span class="mtext-110 cl2">
                                     {{ App\Models\CartItems::where('mac', 1)->sum('totPrice') }}
@@ -179,12 +173,14 @@
                             </div>
                         </div>
 
-                        <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                        <button type="submit" form="checkout"
+                            class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                             Proceed to Checkout
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
-    </form>
+
+    </div>
 @endsection

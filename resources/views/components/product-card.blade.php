@@ -98,8 +98,7 @@
                                  <p class="stext-102 cl3 p-t-23">
                                      {{ $product->desc }}
                                  </p>
-                                 <form action="{{ route('Frontcart.store', ['product_id' => $product->id]) }}"
-                                     method="POST">
+                                 <form action="{{ route('Frontcart.store', $product->id) }}" method="POST">
                                      @csrf
                                      <!--  -->
                                      <div class="p-t-33">

@@ -118,6 +118,12 @@
                                 <p>Sliders</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('orders.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Orders</p>
+                            </a>
+                        </li>
 
 
                     </ul>
