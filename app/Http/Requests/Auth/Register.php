@@ -25,15 +25,14 @@ class Register extends FormRequest
         return [
             'name' => 'required|string|min:5|max:50',
             'email' => 'required|email|unique:users,email|min:7|max:255',
-            'phone' => 'required|string|min:10|unique:users,phone',
+            'phone' => 'required|string|min:10',
             'password' =>
-            ['required', Password::min(8)
+            ['required', 'confirmed', Password::min(8)
                 ->letters()
                 ->mixedCase()
                 ->numbers()
                 ->symbols()
                 ->uncompromised()],
-            'password_confirm' => 'required|same:password',
         ];
     }
 }

@@ -48,6 +48,9 @@
                 <a
                     href="{{ route('changeLang', ['lang' => app()->getlocale()]) }}">{{ app()->getlocale() == 'ar' ? 'English' : 'العربيه' }}</a>
             </li>
+            <li>
+                
+            </li>
 
 
         </ul>
@@ -57,7 +60,10 @@
     <div class="wrap-icon-header flex-w flex-r-m h-full">
         <div class="flex-c-m h-full p-r-25 bor6">
             @php
-                $cartItemsCount = App\Models\CartItems::count();
+                if (auth()->check()) {
+                    $cartItemsCount = App\Models\CartItems::where('user_id',auth()->user()->id);
+                }
+                $cartItemsCount=0;
             @endphp
             <div class="icon-header-item cl0 hov-cl1 trans-04 p-lr-11 icon-header-noti js-show-cart"
                 data-notify="{{ $cartItemsCount }}">

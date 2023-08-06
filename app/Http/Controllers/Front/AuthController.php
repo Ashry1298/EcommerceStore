@@ -15,22 +15,16 @@ class AuthController extends Controller
     public function handleRegister(Register $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make($request->password);
-        $data['password_confirm'] = $data['password'];
         $user = User::create($data);
-        return redirect()->route('auth.login');
+        Auth::login($user);
+        return redirect()->route('front');
     }
     public function handleLogin(Login $request)
     {
-        $data = $request->validated();
-        $is_User = Auth::attempt([
-            'email' => $request->email,
-            'password' => $request->password
-        ]);
-        if (!$is_User) {
+        if (Auth::attempt($request->validated())) {
             return redirect()->back();
         }
-        return redirect()->to('/');
+        return redirect()->to('/')->with('Authentication Error', 'Credinatiols Are Not Correct');
     }
 
     public function logout()

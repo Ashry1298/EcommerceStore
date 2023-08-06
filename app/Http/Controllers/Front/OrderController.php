@@ -16,6 +16,10 @@ class OrderController extends Controller
     public function store(Store $request)
     {
         $data = ($this->getFullAddress($request->validated(), 5));
+        if (auth()->check()) {
+            $data['user_id'] = auth()->user()->id;
+            // $data['full_name']=auth()->user()->name;
+        }
         $order = Order::create($data);
         foreach (CartItems::where('mac', 1)->get() as $item) {
             $item->product_name = implode('_', Product::where('id', $item->product_id)->select('name_en', 'name_ar')->first()->toarray());

@@ -1,6 +1,7 @@
     <!-- Banner -->
     <div class="sec-banner bg0 p-t-95 p-b-55">
         <div class="container">
+
             <div class="row">
                 @foreach ($categories as $category)
                 <div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">

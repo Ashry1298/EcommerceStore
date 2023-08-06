@@ -22,8 +22,8 @@ class Store extends FormRequest
     public function rules(): array
     {
         return [
-            'category_size_id' => 'required|int',
-            'product_color_id' => 'required|int',
+            'category_size_id' => 'nullable|int',
+            'product_color_id' => 'nullable|int',
             'quantity' => 'required|int',
         ];
     }
