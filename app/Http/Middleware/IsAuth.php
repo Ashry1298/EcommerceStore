@@ -17,9 +17,9 @@ class IsAuth
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (Auth::check() == true) {
-            return redirect()->route('front');
+        if (Auth::check()) {
+            return $next($request);
         }
-        return $next($request);
+        return redirect()->route('auth.login');
     }
 }

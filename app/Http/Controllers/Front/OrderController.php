@@ -15,9 +15,9 @@ class OrderController extends Controller
 {
     public function store(Store $request)
     {
-        
+
         $data = ($this->getFullAddress($request->validated(), 5));
-        dd('good');
+        dd('stop here');
         // $data['user_id'] = auth()->user()->id;
         // $data['full_name']=auth()->user()->name;
         // $order = Order::create($data);

@@ -33,10 +33,10 @@ Route::middleware('Lang')->group(function () {
 Route::get('changeLocale/{lang}', [LangController::class, 'changeLang'])->name('changeLang');
 
 Route::middleware('IsAuth')->group(function () {
-    Route::view('/register', 'auth.register');
-    Route::view('/login', 'auth.login');
-    Route::post('/register', [AuthController::class, 'handleRegister'])->name('auth.register');
-    Route::post('/login', [AuthController::class, 'handleLogin'])->name('auth.login');
     Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
-Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::view('/register', 'auth.register');
+Route::view('/login', 'auth.login');
+Route::post('/register', [AuthController::class, 'handleRegister'])->name('auth.register');
+Route::post('/login', [AuthController::class, 'handleLogin'])->name('auth.login');

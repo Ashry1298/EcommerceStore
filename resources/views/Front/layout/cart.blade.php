@@ -1,3 +1,4 @@
+@if (session('cart') != null)
 <div class="wrap-header-cart js-panel-cart">
     <div class="s-full js-hide-cart"></div>
     <div class="header-cart flex-col-l p-l-65 p-r-25">
@@ -9,9 +10,8 @@
                 <i class="zmdi zmdi-close"></i>
             </div>
         </div>
-        @if (session('cart') != null)
             <div class="header-cart-content flex-w js-pscroll">
-                @forelse (session('cart') as $item)
+                @foreach (session('cart') as $item)
                     @php
                         $Product = App\Models\Product::findorfail($item['product_id']);
                     @endphp
@@ -55,10 +55,7 @@
                             </div>
                         </li>
                     </ul>
-                @empty
-                    {{ "You Don't have items in your cart" }}
-                @endforelse
-        @endif
+                @endforeach
         <div class="w-full">
             <div class="header-cart-total w-full p-tb-40">
                 @if (session('cart') != null)
@@ -87,3 +84,4 @@
     </div>
 </div>
 </div>
+    @endif
