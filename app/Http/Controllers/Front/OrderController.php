@@ -17,13 +17,7 @@ class OrderController extends Controller
     {
         
         $data = ($this->getFullAddress($request->validated(), 5));
-        if (!auth()->check()) {
-             session()->flash('message', 'You Need to Login First!');
-            return redirect()->route('auth.login');
-        }else
-        {
-            echo'adasd';
-        }
+        dd('good');
         // $data['user_id'] = auth()->user()->id;
         // $data['full_name']=auth()->user()->name;
         // $order = Order::create($data);

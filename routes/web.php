@@ -29,7 +29,6 @@ Route::middleware('Lang')->group(function () {
     Route::get('/cartItem/destroy/{id}', [CartController::class, 'destroy'])->name('cartItem.destroy');
     Route::get('viewCartItems/{id}', [CartController::class, 'cartItemsView'])->name('viewCartItems');
     Route::post('/cartItems/Update/', [CartController::class, 'update'])->name('cartItems.update');
-    Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
 });
 Route::get('changeLocale/{lang}', [LangController::class, 'changeLang'])->name('changeLang');
 
@@ -38,5 +37,6 @@ Route::middleware('IsAuth')->group(function () {
     Route::view('/login', 'auth.login');
     Route::post('/register', [AuthController::class, 'handleRegister'])->name('auth.register');
     Route::post('/login', [AuthController::class, 'handleLogin'])->name('auth.login');
+    Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
 });
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');

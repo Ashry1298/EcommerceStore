@@ -100,6 +100,7 @@
                                 </p>
                                 <form action="{{ route('Frontcart.store', $product->id) }}" method="POST">
                                     @csrf
+                                    @method('POST')
                                     <!--  -->
                                     <div class="p-t-33">
                                         @if ($product->sizes->count() != 0)

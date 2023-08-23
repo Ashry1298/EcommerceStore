@@ -11,6 +11,7 @@ use App\Http\Requests\CartItems\Store;
 use App\Http\Requests\CartItems\Update;
 use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Stmt\Return_;
+use Termwind\Components\Dd;
 
 class CartController extends Controller
 {
@@ -35,14 +36,15 @@ class CartController extends Controller
             return back();
         } else {
             $carts = session('cart');
+            $Product_id = $data['product_id'];
+            $itemIDs = collect($carts)->pluck('product_id')->all();
             $key = null;
-            $firstKey = array_key_first($carts);
-            for ($i = $firstKey; $i <= count($carts); $i++) {
-                if ($carts[$i]['product_id'] == $data['product_id']) {
-                    $key = $i;
+            foreach ($itemIDs as $index => $value) {
+                if ($value == $Product_id) {
+                    $key = $index;
                 }
             }
-            if ($key == null) {
+            if ($key === null) {
                 session()->push('cart', $data);
                 return back();
             } else {
@@ -60,7 +62,6 @@ class CartController extends Controller
                 return back();
             }
         }
-        
     }
 
     public function update(Request $request)
