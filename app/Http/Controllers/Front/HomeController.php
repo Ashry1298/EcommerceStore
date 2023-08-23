@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Http\Controllers\Front;
+
 use App\Models\Slider;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\CartItems;
 use GuzzleHttp\Psr7\Query;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,6 +22,9 @@ class HomeController extends Controller
             });
         })->get();
         $cats = Category::get();
+        $cartItems = session('cart');
+
+        // session()->flush();
         return view('Front/home/index', compact('products', 'cats'));
     }
 }

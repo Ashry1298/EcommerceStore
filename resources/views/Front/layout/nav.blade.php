@@ -36,34 +36,36 @@
             <li>
                 <a href="#">Shop</a>
             </li>
+            @if (Auth::check())
+                <li>
+                    <a href="#">{{ auth()->user()->name }}</a>
+                </li>
+            @endif
             <li>
                 <a href="#">About</a>
             </li>
-
             <li>
                 <a href="#">Contact</a>
             </li>
-
             <li>
                 <a
                     href="{{ route('changeLang', ['lang' => app()->getlocale()]) }}">{{ app()->getlocale() == 'ar' ? 'English' : 'العربيه' }}</a>
             </li>
             <li>
-                
             </li>
-
-
         </ul>
     </div>
 
     <!-- Icon header -->
+
     <div class="wrap-icon-header flex-w flex-r-m h-full">
         <div class="flex-c-m h-full p-r-25 bor6">
             @php
-                if (auth()->check()) {
-                    $cartItemsCount = App\Models\CartItems::where('user_id',auth()->user()->id);
+                if (session('cart') != null) {
+                    $cartItemsCount = count(session('cart'));
+                } else {
+                    $cartItemsCount = 0;
                 }
-                $cartItemsCount=0;
             @endphp
             <div class="icon-header-item cl0 hov-cl1 trans-04 p-lr-11 icon-header-noti js-show-cart"
                 data-notify="{{ $cartItemsCount }}">
@@ -77,4 +79,5 @@
             </div>
         </div>
     </div>
+
 </nav>

@@ -10,6 +10,30 @@
                 <div class="card">
                     <h3 class="text-center">{{ __('Login') }}</h3>
                     <div class="card-body">
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+                        @if (session()->has('message'))
+                        <div class="alert alert-danger text-center">
+                            <ul>
+                                {{ session()->get('message') }}
+                            </ul>
+                        </div>
+                        @endif
+                        @if (session()->has('error'))
+                        <div class="alert alert-danger text-center">
+                            <ul>
+                                {{ session()->get('error') }}
+                            </ul>
+                        </div>
+                        @endif
+                        
                         <form method="POST" action="{{ route('auth.login') }}">
                             @csrf
                             <div class="form-group row">
@@ -49,7 +73,7 @@
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Login') }}
                                     </button>
-                                    <a href="{{route('auth.register')}}"> Didnt'register yet</a>
+                                    <a href="{{ route('auth.register') }}"> Didnt'register yet</a>
                                 </div>
                             </div>
                         </form>

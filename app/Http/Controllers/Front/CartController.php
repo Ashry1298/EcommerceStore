@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CartItems\Store;
 use App\Http\Requests\CartItems\Update;
+use Illuminate\Support\Facades\Session;
+use PhpParser\Node\Stmt\Return_;
 
 class CartController extends Controller
 {
@@ -18,7 +20,7 @@ class CartController extends Controller
         if (auth()->check()) {
             $cartItems =  CartItems::where('user_id', auth()->user()->id)->get();
         }
-        $cartItems =  CartItems::where('mac', 1)->get();
+        $cartItems = CartItems::where('mac', 1)->get();
         return view('Front.layout.viewCart', compact('cartItems'));
     }
     public function store(Product $product, Store $request)
@@ -26,75 +28,74 @@ class CartController extends Controller
         $data = $request->validated();
         $data['product_id'] = $product->id;
         $data['product_price'] = $product->price;
-        if (auth()->check()) {
-            $data['mac'] = 1; //after became nullable will not cause a problem 
-            $data['user_id'] = auth()->user()->id;
-            $cartItems = $this->getCartItems('user_id', auth()->user()->id, $product);
-            if ($cartItems->count()!= 0) {
-                $this->updateItemQuantity($cartItems, $data, $request->quantity);
-                return back();
-            }
-            $this->addToCartNonExistsItem($request->quantity, $product->price, $data);
+        $data['price'] = ($product->price * $data['quantity']);
+        if (!session()->has('UniqueId') || session('cart') == null) {
+            session()->push('cart', $data);
+            session()->put('UniqueId', session()->getId());
             return back();
         } else {
-            $data['mac'] = session()->getId();
-            $cartItems = $this->getCartItems('mac', session()->getId(), $product);
-            if ($cartItems->count()!= 0) {
-                $this->updateItemQuantity($cartItems, $data, $request->quantity);
+            $carts = session('cart');
+            $key = null;
+            $firstKey = array_key_first($carts);
+            for ($i = $firstKey; $i <= count($carts); $i++) {
+                if ($carts[$i]['product_id'] == $data['product_id']) {
+                    $key = $i;
+                }
+            }
+            if ($key == null) {
+                session()->push('cart', $data);
+                return back();
+            } else {
+                if ($carts[$key]['product_color_id'] == $data['product_color_id'] && !array_key_exists('category_size_id', $carts[$key])) {
+                    $this->updateQuantity($key, $carts, $data);
+                    return back();
+                } elseif ($carts[$key]['product_color_id'] == $data['product_color_id'] && $carts[$key]['category_size_id'] == $data['category_size_id']) {
+                    $this->updateQuantity($key, $carts, $data);
+                    return back();
+                } elseif ($carts[$key]['product_color_id'] != $data['product_color_id'] || $carts[$key]['category_size_id'] != $data['category_size_id']) {
+                    session()->push('cart', $data);
+                    return back();
+                }
+                session(['cart' => $carts]);
                 return back();
             }
-            $this->addToCartNonExistsItem($request->quantity, $product->price, $data);
-            return back();
         }
+        
     }
-    public function update($id, Update $request)
+
+    public function update(Request $request)
     {
-        $ids =  array_keys($request->quantity);
-        foreach ($ids as $id) {
-            $cartItem = CartItems::findorfail($id);
-            $product = Product::findorfail($cartItem->product_id);
-            CartItems::findorfail($id)->update([
-                'quantity' => request()->quantity[$id],
-                'totPrice' => $this->getTotalPrice(request()->quantity[$id], $product->price),
-            ]);
+        $quantities = ($request->input('quantity'));
+        $cart = session('cart');
+        foreach ($cart as &$item) {
+            foreach ($quantities as $key => $value) {
+                if ($item['product_id'] == $key) {
+                    $item['quantity'] = $value;
+                    $item['price'] = ($item['quantity'] * $item['product_price']);
+                }
+            }
         }
+        session(['cart' => $cart]);
         return back();
     }
-    public function destroy(CartItems $cartItem)
+    public function destroy($id)
     {
-        $cartItem->delete();
+        $cart = session('cart');
+        unset($cart[$id]);
+        session(['cart' => $cart]);
         return redirect()->back();
+    }
+
+    public function updateQuantity($key, $carts, $data)
+    {
+        $carts[$key]['quantity'] += $data['quantity'];
+        $carts[$key]['price'] = $this->getTotalPrice($carts[$key]['quantity'], $carts[$key]['product_price']);
+        session(['cart' => $carts]);
+        return session('cart');
     }
 
     public function getTotalPrice(int $quantity, float $price)
     {
-        $total = $quantity * $price;
-        return $total;
-    }
-
-    public function updateItemQuantity($cartItems, array $data, int $newQuantity)
-    {
-        foreach ($cartItems as $item) {
-            if ($item->product_id == $data['product_id']) {
-                $quantity = $item->quantity;
-                $quantity += $newQuantity;
-                $item->update([
-                    'quantity' => $quantity,
-                    'totPrice' => $this->getTotalPrice($quantity, $data['product_price'])
-                ]);
-            }
-        }
-    }
-
-    public function getCartItems(string $check, $id, $product)
-    {
-        $cartItems = CartItems::where($check, $id)->where('product_id', $product->id)->get();
-        return $cartItems;
-    }
-
-    public function addToCartNonExistsItem(int $quantity, float $price, array $data)
-    {
-        $data['totPrice'] = $this->getTotalPrice($quantity, $price);
-        $cartItem =  CartItems::create($data);
+        return $quantity * $price;
     }
 }

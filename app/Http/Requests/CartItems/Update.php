@@ -22,17 +22,13 @@ class Update extends FormRequest
     public function rules(): array
     {
         return [
-            'category_size_id' => 'required|int',
-            'product_color_id' => 'required|int',
-            'quantity' => 'required|int',
+            'quantity' => 'required|array',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'category_size_id.required' => ' Size is required',
-            'product_color_id.required' => ' Color is required',
             'quantity.required' => ' Quantity is required',
         ];
     }

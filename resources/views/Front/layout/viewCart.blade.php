@@ -6,7 +6,16 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
-                <form class="bg0 p-t-75 p-b-85" action="{{ route('cartItems.update', 1) }}" method="POST">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form class="bg0 p-t-75 p-b-85" action="{{ route('cartItems.update') }}" method="POST">
                     @csrf
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
                         <div class="wrap-table-shopping-cart">
@@ -22,51 +31,63 @@
                                         <th class="column-5">Total</th>
                                         <th class="column-5">Image</th>
                                     </tr>
-                                    @foreach ($cartItems as $cartItem)
+                                    @foreach (session('cart') as $x => $item)
                                         @php
-                                            $CategorySizeName = App\Models\CategorySize::where('id', $cartItem->category_size_id)->first();
-                                            $ProductColorName = App\Models\ProductColor::where('id', $cartItem->product_color_id)->first();
+                                            $product = App\Models\Product::where('id', $item['product_id'])->first();
                                         @endphp
                                         <tr class="table_row">
                                             <td class="column-1">
-                                                <a href="{{ route('cartItem.destroy', $cartItem->id) }}"
+                                                <a href="{{ route('cartItem.destroy', $x) }}"
                                                     class="btn btn-outline-danger btn-sm">Delete</a>
                                             </td>
-                                            <td class="column-2">{{ $cartItem->product->name }}</td>
-                                            <td class="column-3">{{ $cartItem->product->price }}</td>
+                                            <td class="column-2">{{ $product->name }}</td>
+                                            <td class="column-3">{{ $product->price }}</td>
                                             <td class="column-4">
                                                 <div class="wrap-num-product flex-w m-l-auto m-r-0">
                                                     <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
                                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                                     </div>
                                                     <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                        name="quantity[{{ $cartItem->id }}]"
-                                                        value="{{ $cartItem->quantity }}">
+                                                        name="quantity[{{ $product->id }}]"
+                                                        value="{{ $item['quantity'] }}">
                                                     <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                                         <i class="fs-16 zmdi zmdi-plus"></i>
                                                     </div>
                                                 </div>
                                             </td>
-                                            @if ($cartItem->category_size_id != null && $cartItem->product_color_id != null)
+                                            @if (array_key_exists('category_size_id', $item) && array_key_exists('product_color_id', $item))
+                                                @php
+                                                    $CategorySizeName = App\Models\CategorySize::where('id', $item['category_size_id'])->first();
+                                                    $ProductColorName = App\Models\ProductColor::where('id', $item['product_color_id'])->first();
+                                                @endphp
+
                                                 <td class="column-5">{{ $CategorySizeName->sizeName }}</td>
                                                 <td class="column-5">{{ $ProductColorName->color }}</td>
+                                            @elseif(array_key_exists('product_color_id', $item))
+                                                @php
+                                                    $ProductColorName = App\Models\ProductColor::where('id', $item['product_color_id'])->first();
+                                                @endphp
+                                                <td class="column-5">{{ '' }} </td>
+                                                <td class="column-5">{{ $ProductColorName->color }}</td>
                                             @endif
-                                            
-                                            <td class="column-5">{{ $cartItem->totPrice }}</td>
+                                            @php
+                                                $total = $item['product_price'] * $item['quantity'];
+                                            @endphp
+                                            <td class="column-5">{{ $total}}</td>
                                             <td class="column-1">
                                                 <div class="how-itemcart1">
-                                                    <img src="{{ asset('uploads/products/' . $cartItem->product->main_image) }}"
+                                                    <img src="{{ asset('uploads/products/' . $product->main_image) }}"
                                                         alt="IMG">
                                                 </div>
                                             </td>
+                                            <td class="column-1">
 
+                                            </td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
                             </table>
                         </div>
-
                         <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
                             <div>
                                 <button type="submit"
@@ -85,18 +106,18 @@
                             Cart Totals
                         </h4>
                         @php
-                            $SubTotal = App\Models\CartItems::where('mac', 1)->sum('totPrice');
+                            $SubTotal = array_sum(array_column(session('cart'), 'price'));
                         @endphp
                         <div class="flex-w flex-t bor12 p-b-13">
                             <div class="size-208">
                                 <span class="stext-110 cl2">
-                                    Subtotal:
+                                    Subtotal: {{ $SubTotal }}
                                 </span>
                             </div>
 
                             <div class="size-209">
                                 <span class="mtext-110 cl2">
-                                    <input type="text" value="{{ $SubTotal }}" name="sub_total" readonly>
+                                    <input type="text" value="{{ $SubTotal }}" name="sub_total" readonly hidden>
                                 </span>
                             </div>
                         </div>
@@ -164,11 +185,11 @@
 
                         <div class="flex-w flex-t p-t-27 p-b-33">
                             <div class="size-208">
-                                <input type="hidden" name="total" value="{{ $SubTotal }}">
+                                <input type="hidden" name="total" value="{{ $SubTotal }} " hidden>
                             </div>
                             <div class="size-209 p-t-1">
                                 <span class="mtext-110 cl2">
-                                    {{ App\Models\CartItems::where('mac', 1)->sum('totPrice') }}
+                                    {{ $SubTotal }}
                                 </span>
                             </div>
                         </div>
