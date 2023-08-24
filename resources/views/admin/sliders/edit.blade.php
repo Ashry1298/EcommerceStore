@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        <img src="{{asset('uploads/sliders/'.$slider->image)}}" width="100" >
+                        <img src="{{asset('uploads/sliders/'.$slider->image)}}" width="100" height="200" >
                     </div>
             </div>
             <div class="card-footer">

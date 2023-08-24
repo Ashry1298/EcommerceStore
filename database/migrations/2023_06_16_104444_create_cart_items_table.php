@@ -13,12 +13,7 @@ return new class extends Migration
     {
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->bigInteger('quantity');
-            $table->foreignId('category_size_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('product_color_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->decimal('totPrice');
+            $table->string('sessionId')->nullable();
             $table->timestamps();
         });
     }

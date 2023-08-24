@@ -3,11 +3,11 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\CartItems;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsAuth
+class HasSessionId
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,10 @@ class IsAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) {
+        $cartItems =  CartItems::where('sessionId', session()->getId())->select('sessionId')->first();
+        if (session('cart') != null && $cartItems != null) {
             return $next($request);
         }
-        return redirect()->route('auth.login');
+        return back();
     }
 }

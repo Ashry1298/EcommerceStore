@@ -2,37 +2,40 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Cart\Cart;
+use App\Cart\CartItem;
 use App\Models\Product;
 use App\Models\CartItems;
+use Termwind\Components\Dd;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CartItems\Store;
 use App\Http\Requests\CartItems\Update;
 use Illuminate\Support\Facades\Session;
-use PhpParser\Node\Stmt\Return_;
-use Termwind\Components\Dd;
 
 class CartController extends Controller
 {
 
     public function cartItemsView($id)
     {
-        if (auth()->check()) {
-            $cartItems =  CartItems::where('user_id', auth()->user()->id)->get();
+        $cartItems =  CartItems::where('sessionId', session()->getId())->select('sessionId')->first();
+        if ($cartItems != null) {
+            $Items = session('cart');
+            return view('Front.layout.viewCart', compact('cartItems'));
         }
-        $cartItems = CartItems::where('mac', 1)->get();
-        return view('Front.layout.viewCart', compact('cartItems'));
+        return back();
     }
     public function store(Product $product, Store $request)
     {
         $data = $request->validated();
-        $data['product_id'] = $product->id;
-        $data['product_price'] = $product->price;
+        $data = array_merge($data + ['product_id' => $product->id, 'product_price' => $product->price]);
         $data['price'] = ($product->price * $data['quantity']);
-        if (!session()->has('UniqueId') || session('cart') == null) {
+        $cartItems = CartItems::where('sessionId', session()->getId())->first();
+        if ($cartItems == null) {
             session()->push('cart', $data);
-            session()->put('UniqueId', session()->getId());
+            CartItems::create(['sessionId' => session()->getId()]);
             return back();
         } else {
             $carts = session('cart');
@@ -66,6 +69,7 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
+        dd($request->all());
         $quantities = ($request->input('quantity'));
         $cart = session('cart');
         foreach ($cart as &$item) {
@@ -98,5 +102,14 @@ class CartController extends Controller
     public function getTotalPrice(int $quantity, float $price)
     {
         return $quantity * $price;
+    }
+
+
+    public function mergeDate(array $data, Product $product)
+    {
+        $data['product_id'] = $product->id;
+        $data['product_price'] = $product->price;
+        $data['price'] = ($product->price * $data['quantity']);
+        return $data;
     }
 }

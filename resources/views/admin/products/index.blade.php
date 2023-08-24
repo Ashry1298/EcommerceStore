@@ -15,7 +15,7 @@
                 aria-describedby="example2_info">
                 <thead>
                     <tr>
-                        <th class="sorting sorting_asc" >id</th>
+                        <th class="sorting sorting_asc">id</th>
                         <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1"
                             aria-label="Browser: activate to sort column ascending">Name_en</th>
                         <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1"
@@ -39,16 +39,16 @@
                 <tbody>
                     @forelse ($products as $x=> $product)
                         <tr>
-                            <th class="htr-control sorting_1" tabinhex="0">{{ $x + 1 }}</th>
-                            <th>{{ $product->name_en }}</th>
-                            <th>{{ $product->name_ar }}</th>
-                            <th>{{ $product->category->title_en }} -{{ $product->category->title_ar }}</th>
-                            <th>{{ $product->price }}</th>
-                            <th>{{ $product->main_image }}</th>
-                            <th>{{ $product->desc_en }}</th>
-                            <th>{{ $product->desc_ar }}</th>
-                            <th>{{ $product->quantity }}</th>
-                            <th>
+                            <td class="htr-control sorting_1" tabinhex="0">{{ $x + 1 }}</td>
+                            <td>{{ $product->name_en }}</td>
+                            <td>{{ $product->name_ar }}</td>
+                            <td>{{ $product->category->title_en }} -{{ $product->category->title_ar }}</td>
+                            <td>{{ $product->price }}</td>
+                            <td> <img src="{{ asset('uploads/products/' . $product->main_image) }}" alt="image" width="100" height="100"></td>
+                            <td>{{ $product->desc_en }}</td>
+                            <td>{{ $product->desc_ar }}</td>
+                            <td>{{ $product->quantity }}</td>
+                            <td>
                                 <a class="btn btn-outline-info" href="{{ route('products.edit', $product->id) }}"
                                     role="button">edit </a>
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST">
@@ -56,12 +56,12 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger">Delete</button>
                                 </form>
-                            </th>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <th class="dtr-control sorting_1" tabindex="0"> Sorry No Data Available</td>
-                            </th>
+                            <td class="dtr-control sorting_1" tabindex="0"> Sorry No Data Available</td>
+
                         </tr>
                     @endforelse
                 </tbody>

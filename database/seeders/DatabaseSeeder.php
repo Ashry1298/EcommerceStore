@@ -3,6 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Tag;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Slider;
+use Database\Factories\SliderFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,13 +18,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Admin::factory(10)->create();
-        \App\Models\Category::factory(10)->create();
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        Slider::factory()
+            ->count(3)
+            ->create();
+        Category::factory()
+            ->count(10)
+            ->create();
+        Tag::factory()
+            ->count(10)
+            ->create();
+        // Product::factory()
+        //     ->count(10)
+        //     ->create();
     }
 }

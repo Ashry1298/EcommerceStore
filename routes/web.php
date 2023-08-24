@@ -1,5 +1,6 @@
 <?php
 
+use  App\Cart\Cart;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LangController;
 use App\Http\Controllers\ProfileController;
@@ -27,7 +28,6 @@ Route::middleware('Lang')->group(function () {
     Route::get('category/{category}', [CategoryController::class, 'show'])->name('category.show');
     Route::post('/cart/add/{product}', [CartController::class, 'store'])->name('Frontcart.store');
     Route::get('/cartItem/destroy/{id}', [CartController::class, 'destroy'])->name('cartItem.destroy');
-    Route::get('viewCartItems/{id}', [CartController::class, 'cartItemsView'])->name('viewCartItems');
     Route::post('/cartItems/Update/', [CartController::class, 'update'])->name('cartItems.update');
 });
 Route::get('changeLocale/{lang}', [LangController::class, 'changeLang'])->name('changeLang');
@@ -40,3 +40,7 @@ Route::view('/register', 'auth.register');
 Route::view('/login', 'auth.login');
 Route::post('/register', [AuthController::class, 'handleRegister'])->name('auth.register');
 Route::post('/login', [AuthController::class, 'handleLogin'])->name('auth.login');
+
+Route::middleware('HasSessionId')->group(function () {
+    Route::get('viewCartItems/{id}', [CartController::class, 'cartItemsView'])->name('viewCartItems');
+});

@@ -3,12 +3,11 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Faker\Factory as Faker;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
  */
-class CategoryFactory extends Factory
+class TagFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,7 +19,6 @@ class CategoryFactory extends Factory
         return [
             'title_en' => fake()->word(),
             'title_ar' => fake()->word(),
-            'logo' =>  str_replace('public/uploads/cats', '', fake()->image('public/uploads/cats', $width = 1200, $height = 1486, 'clothes')),
         ];
     }
 }

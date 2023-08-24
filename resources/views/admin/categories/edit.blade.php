@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        <img src="{{asset('uploads/cats/'. $category->logo)}}" width="100" >
+                        <img src="{{asset('uploads/cats/'. $category->logo)}}"  width="100" height="100">
                     </div>
             </div>
             <div class="card-footer">

@@ -23,7 +23,6 @@ class HomeController extends Controller
         })->get();
         $cats = Category::get();
         $cartItems = session('cart');
-
         // session()->flush();
         return view('Front/home/index', compact('products', 'cats'));
     }
