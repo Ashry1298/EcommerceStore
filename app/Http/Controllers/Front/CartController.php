@@ -29,11 +29,10 @@ class CartController extends Controller
     }
     public function store(Product $product, Store $request)
     {
-        $data = $request->validated();
-        $data = array_merge($data + ['product_id' => $product->id, 'product_price' => $product->price]);
-        $data['price'] = ($product->price * $data['quantity']);
+        $data = $this->mergeDate($request->validated(), $product);
         $cartItems = CartItems::where('sessionId', session()->getId())->first();
         if ($cartItems == null) {
+            dd('here');
             session()->push('cart', $data);
             CartItems::create(['sessionId' => session()->getId()]);
             return back();
@@ -47,23 +46,25 @@ class CartController extends Controller
                     $key = $index;
                 }
             }
-            if ($key === null) {
-                session()->push('cart', $data);
-                return back();
-            } else {
-                if ($carts[$key]['product_color_id'] == $data['product_color_id'] && !array_key_exists('category_size_id', $carts[$key])) {
-                    $this->updateQuantity($key, $carts, $data);
-                    return back();
-                } elseif ($carts[$key]['product_color_id'] == $data['product_color_id'] && $carts[$key]['category_size_id'] == $data['category_size_id']) {
-                    $this->updateQuantity($key, $carts, $data);
-                    return back();
-                } elseif ($carts[$key]['product_color_id'] != $data['product_color_id'] || $carts[$key]['category_size_id'] != $data['category_size_id']) {
-                    session()->push('cart', $data);
-                    return back();
-                }
-                session(['cart' => $carts]);
-                return back();
-            }
+            $this->casesCheckForCart($carts, $key, $data);
+            return back();
+            // if ($key === null) {
+            //     session()->push('cart', $data);
+            //     return back();
+            // } else {
+            //     if ($carts[$key]['product_color_id'] == $data['product_color_id'] && !array_key_exists('category_size_id', $carts[$key])) {
+            //         $this->updateQuantity($key, $carts, $data);
+            //         return back();
+            //     } elseif ($carts[$key]['product_color_id'] == $data['product_color_id'] && $carts[$key]['category_size_id'] == $data['category_size_id']) {
+            //         $this->updateQuantity($key, $carts, $data);
+            //         return back();
+            //     } elseif ($carts[$key]['product_color_id'] != $data['product_color_id'] || $carts[$key]['category_size_id'] != $data['category_size_id']) {
+            //         session()->push('cart', $data);
+            //         return back();
+            //     }
+            //     session(['cart' => $carts]);
+            //     return back();
+            // }
         }
     }
 
@@ -111,5 +112,27 @@ class CartController extends Controller
         $data['product_price'] = $product->price;
         $data['price'] = ($product->price * $data['quantity']);
         return $data;
+    }
+
+
+    public function casesCheckForCart($carts, $key, $data)
+    {
+        if ($key === null) {
+            session()->push('cart', $data);
+            return back();
+        } else {
+            if ($carts[$key]['product_color_id'] == $data['product_color_id'] && !array_key_exists('category_size_id', $carts[$key])) {
+                $this->updateQuantity($key, $carts, $data);
+                return back();
+            } elseif ($carts[$key]['product_color_id'] == $data['product_color_id'] && $carts[$key]['category_size_id'] == $data['category_size_id']) {
+                $this->updateQuantity($key, $carts, $data);
+                return back();
+            } elseif ($carts[$key]['product_color_id'] != $data['product_color_id'] || $carts[$key]['category_size_id'] != $data['category_size_id']) {
+                session()->push('cart', $data);
+                return back();
+            }
+            session(['cart' => $carts]);
+            return back();
+        }
     }
 }
