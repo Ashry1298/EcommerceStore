@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\User;
+use App\Models\CartItems;
 use Illuminate\Http\Request;
 use App\Http\Requests\Auth\Login;
 use App\Http\Controllers\Controller;
@@ -20,7 +21,12 @@ class AuthController extends Controller
     }
     public function handleLogin(Login $request)
     {
+        $sessionIds = CartItems::pluck('identifier')->toarray();
+        $sessionIdentifer = session('identifier');
         if (Auth::attempt($request->validated())) {
+            if (in_array($sessionIdentifer, $sessionIds)) {
+                CartItems::where('identifier', $sessionIdentifer)->update(['sessionId' => session()->getId()]);
+            }
             return redirect()->route('front');
         } else {
             session()->flash('error', 'Credinatials Are Not Correct!');
@@ -30,6 +36,12 @@ class AuthController extends Controller
 
     public function logout()
     {
+        $sessionIds = CartItems::pluck('identifier')->toarray();
+        $sessionIdentifer = session('identifier');
+
+        if (in_array($sessionIdentifer, $sessionIds)) {
+            CartItems::where('identifier', $sessionIdentifer)->update(['sessionId' => session()->getId()]);
+        }
         Auth::logout();
         return redirect(route('front'));
     }

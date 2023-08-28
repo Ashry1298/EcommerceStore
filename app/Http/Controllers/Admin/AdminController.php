@@ -59,6 +59,7 @@ class AdminController extends Controller
      */
     public function update(Update $request, Admin $admin)
     {
+        
         $data=$request->validated();
         if($request->has('password') and $request->get('password'))
         {

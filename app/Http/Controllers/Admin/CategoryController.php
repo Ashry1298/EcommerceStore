@@ -16,6 +16,8 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      */  public function index()
     {
+
+
         $categories = Category::get();
         return view('admin.categories.index', compact('categories'));
     }
@@ -33,6 +35,7 @@ class CategoryController extends Controller
      */
     public function store(Store $request)
     {
+
         $data = $request->validated();
         if ($request->hasFile('logo')) {
             $logo = uniqid('logo-') . '.' . $request->logo->getClientOriginalExtension();
@@ -67,6 +70,8 @@ class CategoryController extends Controller
      */
     public function update(Update $request, Category $category)
     {
+   
+
         $data = $request->validated();
         if ($request->hasFile('logo')) {
             Storage::disk('uploads')->delete('cats/' . $category->logo);

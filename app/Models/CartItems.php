@@ -11,6 +11,7 @@ class CartItems extends Model
     use HasFactory;
     protected $fillable = [
         'sessionId',
+        'identifier'
     ];
 
     public function product()

@@ -1,6 +1,8 @@
 <?php
 
 use  App\Cart\Cart;
+use App\Http\Controllers\Admin\AdminController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LangController;
 use App\Http\Controllers\ProfileController;
@@ -9,6 +11,7 @@ use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\OrderController;
 use App\Http\Controllers\Front\CategoryController;
+use App\Models\Admin;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +23,7 @@ use App\Http\Controllers\Front\CategoryController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 
 Route::middleware('Lang')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('front');
@@ -42,5 +46,7 @@ Route::post('/register', [AuthController::class, 'handleRegister'])->name('auth.
 Route::post('/login', [AuthController::class, 'handleLogin'])->name('auth.login');
 
 Route::middleware('HasSessionId')->group(function () {
-    Route::get('viewCartItems/{id}', [CartController::class, 'cartItemsView'])->name('viewCartItems');
 });
+Route::get('viewCartItems/', [CartController::class, 'cartItemsView'])->name('viewCartItems');
+
+

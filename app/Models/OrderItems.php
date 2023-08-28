@@ -18,4 +18,5 @@ class OrderItems extends Model
         'chosen_color',
         'chosen_size'
     ];
+
 }

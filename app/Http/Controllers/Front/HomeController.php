@@ -9,6 +9,7 @@ use App\Models\CartItems;
 use GuzzleHttp\Psr7\Query;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Session\Session;
 
 class HomeController extends Controller
 {

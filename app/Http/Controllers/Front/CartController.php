@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Session;
 class CartController extends Controller
 {
 
-    public function cartItemsView($id)
+    public function cartItemsView()
     {
-        $cartItems =  CartItems::where('sessionId', session()->getId())->select('sessionId')->first();
+        $cartItems =  CartItems::where('identifier', session('identifier'))->first();
         if ($cartItems != null) {
             $Items = session('cart');
             return view('Front.layout.viewCart', compact('cartItems'));
@@ -31,10 +31,14 @@ class CartController extends Controller
     {
         $data = $this->mergeDate($request->validated(), $product);
         $cartItems = CartItems::where('sessionId', session()->getId())->first();
-        if ($cartItems == null) {
-            dd('here');
+        if ($cartItems === null) {
             session()->push('cart', $data);
-            CartItems::create(['sessionId' => session()->getId()]);
+            $identifier = uniqid('Sess-');
+            $request->session()->put('identifier', $identifier);
+            CartItems::create([
+                'sessionId' => session()->getId(),
+                'identifier' => $identifier
+            ]);
             return back();
         } else {
             $carts = session('cart');
@@ -48,29 +52,12 @@ class CartController extends Controller
             }
             $this->casesCheckForCart($carts, $key, $data);
             return back();
-            // if ($key === null) {
-            //     session()->push('cart', $data);
-            //     return back();
-            // } else {
-            //     if ($carts[$key]['product_color_id'] == $data['product_color_id'] && !array_key_exists('category_size_id', $carts[$key])) {
-            //         $this->updateQuantity($key, $carts, $data);
-            //         return back();
-            //     } elseif ($carts[$key]['product_color_id'] == $data['product_color_id'] && $carts[$key]['category_size_id'] == $data['category_size_id']) {
-            //         $this->updateQuantity($key, $carts, $data);
-            //         return back();
-            //     } elseif ($carts[$key]['product_color_id'] != $data['product_color_id'] || $carts[$key]['category_size_id'] != $data['category_size_id']) {
-            //         session()->push('cart', $data);
-            //         return back();
-            //     }
-            //     session(['cart' => $carts]);
-            //     return back();
-            // }
         }
     }
 
     public function update(Request $request)
     {
-        dd($request->all());
+
         $quantities = ($request->input('quantity'));
         $cart = session('cart');
         foreach ($cart as &$item) {
@@ -89,7 +76,7 @@ class CartController extends Controller
         $cart = session('cart');
         unset($cart[$id]);
         session(['cart' => $cart]);
-        return redirect()->back();
+        return redirect()->route('Front');
     }
 
     public function updateQuantity($key, $carts, $data)
