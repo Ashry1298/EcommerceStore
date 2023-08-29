@@ -73,7 +73,7 @@
                                             @php
                                                 $total = $item['product_price'] * $item['quantity'];
                                             @endphp
-                                            <td class="column-5">{{ $total}}</td>
+                                            <td class="column-5">{{ $total }}</td>
                                             <td class="column-1">
                                                 <div class="how-itemcart1">
                                                     <img src="{{ asset('uploads/products/' . $product->main_image) }}"
@@ -135,52 +135,56 @@
                                     contact us
                                     if you need any help.
                                 </p>
+                                    <div class="p-t-15">
+                                        <div class="bor8 bg0 m-b-12">
+                                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text"
+                                                name="full_name" placeholder="Full Name"
+                                                value="{{ auth()->user()->name ?? '' }}">
+                                        </div>
+                                        <div class="bor8 bg0 m-b-12">
+                                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone"
+                                                placeholder="phone" class="@error('phone') is-invalid @enderror"
+                                                value="{{ auth()->user()->phone ?? '' }}">
+                                            @error('phone')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="bor8 bg0 m-b-12">
+                                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="email"
+                                                placeholder="email" value="{{ auth()->user()->email ?? '' }}"
+                                                class="@error('email') is-invalid @enderror">
+                                            @error('email')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="bor8 bg0 m-b-12">
+                                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="country"
+                                                placeholder="country"class="@error('country') is-invalid @enderror">
+                                            @error('country')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="bor8 bg0 m-b-12">
+                                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text"
+                                                name="state"
+                                                placeholder="State"class="@error('state') is-invalid @enderror">
+                                            @error('state')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
 
-                                <div class="p-t-15">
-                                    <div class="bor8 bg0 m-b-12">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="full_name"
-                                            placeholder="Full Name">
-                                    </div>
-                                    <div class="bor8 bg0 m-b-12">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone"
-                                            placeholder="phone" class="@error('phone') is-invalid @enderror">
-                                        @error('phone')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="bor8 bg0 m-b-12">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="email"
-                                            placeholder="email" class="@error('email') is-invalid @enderror">
-                                        @error('email')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="bor8 bg0 m-b-12">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="country"
-                                            placeholder="country"class="@error('country') is-invalid @enderror">
-                                        @error('country')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="bor8 bg0 m-b-12">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state"
-                                            placeholder="State"class="@error('state') is-invalid @enderror">
-                                        @error('state')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                                        <div class="bor8 bg0 m-b-22">
+                                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text"
+                                                name="cityAndP-c"
+                                                placeholder="City and Postal-code "class="@error('cityAndP-c') is-invalid @enderror">
+                                            @error('cityAndP-c')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
 
-                                    <div class="bor8 bg0 m-b-22">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text"
-                                            name="cityAndP-c"
-                                            placeholder="City and Postal-code "class="@error('cityAndP-c') is-invalid @enderror">
-                                        @error('cityAndP-c')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
                                     </div>
-
-                                </div>
                             </div>
+                            
                         </div>
 
                         <div class="flex-w flex-t p-t-27 p-b-33">

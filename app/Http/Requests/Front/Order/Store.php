@@ -32,19 +32,5 @@ class Store extends FormRequest
             'cityAndP-c' => 'required|string|min:5|max:30',
         ];
     }
-    //     public function messages()
-    //     {
-    //         return [
-    //             'sub_total.requried' => 'Total Is Requried',
-    //             'full_name.requried' => 'Please Enter Your Full Name',
-    //             'full_name.string' => 'Your Name Must Be A String',
-    //             'full_name.min' => 'Full Name Must Be At Least 3 Characters',
-    //             'full_name.max' => 'Full Name Can Not Be More Than  55 Character',
-    //             'phone.requried' => 'Please Enter Your Phone ',
-    //             'phone.numeric' => 'Your Phone Must Constists From Numbers',
-    //             'phone.min' => 'Your PhoneMust Be At Least 10 Characters',
-    //             'email.requried' => 'Please Enter Your Email ',
-    //             'email.email' => ' ',
-    //         ];
-    //     }
+  
 }

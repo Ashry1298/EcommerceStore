@@ -38,7 +38,15 @@
             </li>
             @if (Auth::check())
                 <li>
-                    <a href="#">{{ auth()->user()->name }}</a>
+                    <a href="{{ route('myOrders') }}">
+                        My Orders
+                    </a>
+                </li>
+            @else
+                <li>
+                    <a href="{{ route('findMyOrder') }}">
+                        Find My Orders
+                    </a>
                 </li>
             @endif
             <li>
@@ -51,8 +59,7 @@
                 <a
                     href="{{ route('changeLang', ['lang' => app()->getlocale()]) }}">{{ app()->getlocale() == 'ar' ? 'English' : 'العربيه' }}</a>
             </li>
-            <li>
-            </li>
+
         </ul>
     </div>
 

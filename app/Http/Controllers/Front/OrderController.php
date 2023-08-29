@@ -2,31 +2,57 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\User;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\CartItems;
+use App\Models\OrderItems;
+use Termwind\Components\Dd;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Front\Order\Store;
-use App\Models\CartItems;
-use App\Models\Order;
-use App\Models\OrderItems;
-use App\Models\Product;
 use Illuminate\Contracts\Session\Session;
-use Illuminate\Http\Request;
-use Termwind\Components\Dd;
 
 class OrderController extends Controller
 {
+
+    public function index()
+    {
+        if (auth()->check()) {
+            $orders = User::findorfail(auth()->user()->id)->orders()->paginate();
+            return view('Front/orders/index', compact('orders'));
+        }
+        return back();
+    }
     public function store(Store $request)
     {
+        auth()->check() == true ?  $data['user_id'] = auth()->user()->id : null;
         $data = ($this->getFullAddress($request->validated(), 5));
-        $data['user_id'] = auth()->user()->id;
         $order = Order::create($data);
+        $order_id = $order->id;
         foreach (session('cart') as $item) {
-            $item['order_id'] = $order->id;
-            $item['sub_total'] = $order->sub_total;
             $product_name = Product::where('id', $item['product_id'])->pluck('name_en')->first();
-            $item['product_name'] = $product_name;
-            $orderItems =  OrderItems::create($item);
+            $orderItems =  OrderItems::create(
+                [
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'],
+                    'product_name' => $product_name,
+                    'product_price' => $item['product_price'],
+                    'quantity' => $item['quantity'],
+                    'sub_total' => $order->sub_total,
+                    'chosen_color' => $item['product_color_id'] ?? null,
+                    'chosen_size ' => $item['category_size_id'] ?? null,
+                ]
+            );
         }
-        dd('stoip_order');
+        session()->forget('cart');
+        return redirect()->route('front');
+    }
+
+    public function show($id)
+    {
+        $orderItems = Order::findorfail($id)->orderItems()->paginate();
+        return  view('Front.orders.show', compact('orderItems', 'id'));
     }
 
     protected function getFullAddress(array $data, int $length)

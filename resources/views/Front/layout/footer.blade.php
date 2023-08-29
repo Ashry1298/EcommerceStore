@@ -1,3 +1,4 @@
+<div class="footer-container">
 <footer class="bg3 p-t-75 p-b-32">
     <div class="container">
         <div class="row">
@@ -135,4 +136,5 @@
     <span class="symbol-btn-back-to-top">
         <i class="zmdi zmdi-chevron-up"></i>
     </span>
+</div>
 </div>

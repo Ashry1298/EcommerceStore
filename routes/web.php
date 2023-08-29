@@ -1,7 +1,8 @@
 <?php
 
 use  App\Cart\Cart;
-use App\Http\Controllers\Admin\AdminController;
+use App\Models\Admin;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LangController;
@@ -9,9 +10,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\AuthController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Front\OrderController;
 use App\Http\Controllers\Front\CategoryController;
-use App\Models\Admin;
+use App\Models\OrderItems;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +39,6 @@ Route::middleware('Lang')->group(function () {
 Route::get('changeLocale/{lang}', [LangController::class, 'changeLang'])->name('changeLang');
 
 Route::middleware('IsAuth')->group(function () {
-    Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
 Route::view('/register', 'auth.register');
@@ -50,3 +51,8 @@ Route::middleware('HasSessionId')->group(function () {
 Route::get('viewCartItems/', [CartController::class, 'cartItemsView'])->name('viewCartItems');
 
 
+Route::get('/myorders', [OrderController::class, 'index'])->name('myOrders');
+
+Route::get('/orders/show/{id}', [OrderController::class, 'show'])->name('MyOrders.show');
+Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
+Route::view('/FindoMyOrder','Front.orders.findMyOrders')->name('findMyOrder');

@@ -15,7 +15,9 @@
     <!-- Slider -->
     <!-- Product -->
     <div class="main-content-page">
-        @yield('content')
+        <div class="content-container">
+            @yield('content')
+        </div>
     </div>
     <!-- Footer -->
     @include('Front.layout.footer')
