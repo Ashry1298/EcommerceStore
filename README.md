@@ -2,6 +2,7 @@ eCommerce Website with Admin Panel and User Authentication
 This is a comprehensive eCommerce website project with a user-friendly admin panel and multi-authentication functionality. The project includes a range of features and functionalities to provide a seamless online shopping experience for customers, while offering powerful management tools for administrators.
 
 Key Features:
+
 • User Authentication: The website implements a secure user authentication system with multi-authentication support. Users can create accounts, log in, and access personalized features such 
   as cart management, order tracking, and viewing order history.
 
