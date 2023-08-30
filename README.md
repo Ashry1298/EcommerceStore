@@ -1,4 +1,5 @@
 eCommerce Website with Admin Panel and User Authentication
+
 This is a comprehensive eCommerce website project with a user-friendly admin panel and multi-authentication functionality. The project includes a range of features and functionalities to provide a seamless online shopping experience for customers, while offering powerful management tools for administrators.
 
 Key Features:
@@ -30,8 +31,8 @@ Key Features:
  
 Technologies Used:
 
-Front-end: HTML, CSS, JavaScript, Bootstrap (or any other front-end framework)
+Front-end: HTML, CSS, JavaScript, Bootstrap 
 
-Back-end: PHP (Laravel framework)
+Back-end: PHP And  (Laravel framework)
 
-Database: MySQL (or any other preferred database management system)
+Database: MySQL
