@@ -27,7 +27,7 @@ return new class extends Migration
             ])->default('pending');
             $table->text('status_notes')->nullable();
             $table->float('total');
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            // $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete(); //stop Untill adding MultiAuthentication
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\CartItems;
 use App\Models\OrderItems;
+use Illuminate\Support\Str;
 use Termwind\Components\Dd;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,8 +27,12 @@ class OrderController extends Controller
     }
     public function store(Store $request)
     {
-        auth()->check() == true ?  $data['user_id'] = auth()->user()->id : null;
         $data = ($this->getFullAddress($request->validated(), 5));
+        if (auth()->check() == true) {
+            $data['user_id'] = auth()->user()->id;
+        } else {
+            $data['order_code'] = 'code-' . Str::random('8');
+        }
         $order = Order::create($data);
         $order_id = $order->id;
         foreach (session('cart') as $item) {
@@ -51,14 +56,36 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $orderItems = Order::findorfail($id)->orderItems()->paginate();
+        $order = Order::findorfail($id)->with('orderItems')->paginate();
         return  view('Front.orders.show', compact('orderItems', 'id'));
     }
+    public function showFindMyOrderPage()
+    {
+        return view('Front.orders.findMyOrders');
+    }
+
+
+    public function findMyOrder(Request $request)
+    {
+        $request->validate(['order_code' => 'required|string|max:13']);
+        $order = Order::where('order_code', $request->order_code)->with('orderItems')->first();
+        if ($order != null) {
+            return view('Front.orders.show', compact('order'));
+        }
+        return redirect()->back()->with('orderErrorMessage', "Sorry We couldn't find your order");
+    }
+
 
     protected function getFullAddress(array $data, int $length)
     {
         $full_address = array_splice($data, 5);
         $data['full_address'] = implode(',', $full_address);
         return $data;
+    }
+
+    public function destroy(Order $order)
+    {
+        $order->delete();
+        return redirect()->back()->with('deleteMessage', 'Ordered Canceled Successfully');
     }
 }

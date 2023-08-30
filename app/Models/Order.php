@@ -17,7 +17,8 @@ class Order extends Model
         'status',
         'status_notes',
         'total',
-        'user_id'
+        'user_id',
+        'order_code'
     ];
 
     public function orderItems()

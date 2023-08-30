@@ -11,15 +11,18 @@
             </li>
             @auth
                 <li>
-                    <a href="{{ route('auth.logout') }}">Logout</a>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" >Logout</button>
+                    </form>
                 </li>
             @endauth
             @guest
                 <li>
-                    <a href="{{ route('auth.register') }}">Register</a>
+                    <a href="{{ route('register') }}">Register</a>
                 </li>
                 <li>
-                    <a href="{{ route('auth.login') }}">Login</a>
+                    <a href="{{ route('login') }}">Login</a>
                 </li>
             @endguest
             @if (!empty($cats))
@@ -44,7 +47,7 @@
                 </li>
             @else
                 <li>
-                    <a href="{{ route('findMyOrder') }}">
+                    <a href="{{ route('findMyOrders') }}">
                         Find My Orders
                     </a>
                 </li>

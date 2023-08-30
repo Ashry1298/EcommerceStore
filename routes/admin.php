@@ -12,21 +12,42 @@ use App\Http\Controllers\Admin\ProductColorController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductPropsController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\AdminAuth\AuthenticatedSessionController;
 
-Route::resource('admins', AdminController::class);
-Route::resource('categories', CategoryController::class);
-Route::resource('tags', TagController::class);
-Route::resource('products', ProductController::class);
-Route::resource('orders', OrderController::class);
-Route::delete('productProps/delete/{id}', [ProductPropsController::class, 'delete'])->name('productProps.delete');
-Route::post('/productProps/update/{productProps}', [ProductPropsController::class, 'update'])->name('productProps.update');
-Route::resource('productImage', ProductImageController::class);
-Route::resource('/sliders', SliderController::class);
-Route::get('/catizes/{category}', [CategorySizeController::class, 'show'])->name('cat.sizes');
-Route::post('/catsizes/store/{id}', [CategorySizeController::class, 'store'])->name('cat.sizes.store');
-Route::delete('cat.sizes.destroy/{size}', [CategorySizeController::class, 'destroy'])->name('cat.sizes.destroy');
-Route::delete('productColors/delete/{productColor}', [ProductColorController::class, 'delete'])->name('productColors.delete');
-Route::post('/productColors/update/{productColor}', [ProductColorController::class, 'update'])->name('productColors.update');
+Route::middleware('isAdmin')->group(function () {
+
+    Route::resource('admins', AdminController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('tags', TagController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('orders', OrderController::class);
+    Route::resource('productImage', ProductImageController::class);
+    Route::resource('/sliders', SliderController::class);
+    Route::view('/dashboard', 'index', ['ordersCount' => \App\Models\Order::count()])->name('admin.dashboard');
+
+    Route::controller(ProductPropsController::class)->group(function () {
+        Route::delete('productProps/delete/{id}', 'delete')->name('productProps.delete');
+        Route::post('/productProps/update/{productProps}', 'update')->name('productProps.update');
+    });
+    Route::controller(CategorySizeController::class)->group(function () {
+        Route::get('/catizes/{category}', 'show')->name('cat.sizes');
+        Route::post('/catsizes/store/{id}', 'store')->name('cat.sizes.store');
+        Route::delete('cat.sizes.destroy/{size}', 'destroy')->name('cat.sizes.destroy');
+    });
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/order/show/{order}', 'show')->name('order.show');
+        Route::put('/status/update/{order}', 'statusUpdate')->name('status.update');
+    });
+
+    Route::controller(ProductColorController::class)->group(function () {
+        Route::delete('productColors/delete/{productColor}', 'delete')->name('productColors.delete');
+        Route::post('/productColors/update/{productColor}', 'update')->name('productColors.update');
+    });
+
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('admin.logout');
+});
+
 // Route::get('/ordersPage', [OrderController::class, 'index'])->name('orders.index');
-Route::get('/order/show/{order}', [OrderController::class, 'show'])->name('order.show');
-Route::put('/status/update/{order}', [OrderController::class, 'statusUpdate'])->name('status.update');
+
+require __DIR__ . '/admin-auth.php';
