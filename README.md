@@ -30,5 +30,7 @@ Key Features:
  
 Technologies Used:
 Front-end: HTML, CSS, JavaScript, Bootstrap (or any other front-end framework)
+
 Back-end: PHP (Laravel framework)
+
 Database: MySQL (or any other preferred database management system)
