@@ -29,6 +29,7 @@ Key Features:
 • Responsive Design: The website is built with a responsive design, ensuring optimal user experience across various devices and screen sizes.
  
 Technologies Used:
+
 Front-end: HTML, CSS, JavaScript, Bootstrap (or any other front-end framework)
 
 Back-end: PHP (Laravel framework)
